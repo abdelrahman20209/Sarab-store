@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ar" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../img/LOGO.png" />
+    <link rel="apple-touch-icon" href="../img/LOGO.png" />
+    <title>Sarab | سلة المقتنيات</title>
+    <meta
+      name="description"
+      content="سراب للعطور - تجربة عطرية فريدة تمزج بين الأصالة العربية والحداثة."
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../sarab.css" />
+    <link rel="stylesheet" href="car.css" />
+  </head>
+  <body>
+    <div class="luxury-bg-wrapper">
+      <div class="mesh-gradient"></div>
+      <div class="glass-overlay"></div>
+    </div>
+
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="../index.html"
+            ><img src="../img/sarasb.jpg" alt="Sarab Logo"
+          /></a>
+        </div>
+
+        <!-- كود زر الرجوع بتصميم رمادي احترافي -->
+        <button onclick="history.back()" class="btn-back">
+          <span>&#10229;</span> رجوع
+        </button>
+
+        <style>
+          .btn-back {
+            background-color: #6c757d; /* لون رمادي هادئ */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px; /* حواف دائرية */
+            cursor: pointer;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition:
+              background-color 0.3s ease,
+              transform 0.2s ease;
+            direction: rtl; /* لضبط الاتجاه من اليمين لليسار */
+          }
+
+          /* تأثير عند وضع الماوس على الزر */
+          .btn-back:hover {
+            background-color: #495057; /* رمادي أغمق قليلاً */
+            transform: scale(1.05); /* تكبير بسيط */
+          }
+
+          /* تأثير عند الضغط */
+          .btn-back:active {
+            transform: scale(0.95);
+          }
+        </style>
+      </nav>
+    </header>
+
+    <main class="cart-main-container">
+      <section class="cart-section">
+        <h2 class="section-title">
+          <i class="fas fa-shopping-cart"></i> مقتنياتك الحالية
+        </h2>
+        <div id="cart-items-container" class="cart-items-list">
+          <div
+            class="loading-status"
+            style="color: white; text-align: center; padding: 20px"
+          >
+            جاري فحص مقتنياتك ... ⏳
+          </div>
+        </div>
+      </section>
+
+      <section class="checkout-grid">
+        <div class="customer-details-card">
+          <h3><i class="fas fa-shipping-fast"></i> بيانات الشحن والتوصيل</h3>
+          <p
+            class="hint-text"
+            style="color: #888; font-size: 0.8rem; margin-bottom: 15px"
+          >
+            تأكد من صحة بياناتك لضمان وصولها إليك
+          </p>
+
+          <div class="form-group">
+            <label>الاسم بالكامل</label>
+            <input type="text" id="cart-name" placeholder="الاسم المسجل..." />
+          </div>
+          <div class="form-group">
+            <label>رقم الهاتف</label>
+            <input type="tel" id="cart-phone" placeholder="رقم التواصل..." />
+          </div>
+          <div class="form-group">
+            <label>عنوان التوصيل بالتفصيل</label>
+            <textarea
+              id="cart-address"
+              rows="3"
+              placeholder="المحافظة، المنطقة، اسم الشارع..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="order-summary-card">
+          <h3><i class="fas fa-file-invoice-dollar"></i> ملخص المنتجات</h3>
+          <div
+            class="summary-item"
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin: 10px 0;
+              color: #fff;
+            "
+          >
+            <span>إجمالي المنتجات:</span>
+            <span id="subtotal">0 ج.م</span>
+          </div>
+          <div
+            class="summary-item"
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin: 10px 0;
+              color: #fff;
+            "
+          >
+            <span>مصاريف الشحن:</span>
+            <span id="shipping-fee">50 ج.م</span>
+          </div>
+          <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0" />
+          <div
+            class="summary-item total"
+            style="
+              display: flex;
+              justify-content: space-between;
+              color: #e30613;
+              font-weight: bold;
+              font-size: 1.2rem;
+            "
+          >
+            <span>الإجمالي النهائي:</span>
+            <span id="final-total">0 ج.م</span>
+          </div>
+
+          <button
+            id="confirmOrderBtn"
+            class="confirm-btn"
+            style="
+              width: 100%;
+              padding: 15px;
+              background: #800000;
+              color: #fff;
+              border: none;
+              border-radius: 5px;
+              margin-top: 20px;
+              cursor: pointer;
+              font-weight: bold;
+            "
+          >
+            تأكيد الطلب الآن <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <div id="profilePanel" class="profile-slide-panel">
+      <div class="panel-header">
+        <span
+          class="close-panel"
+          id="closeProfile"
+          style="cursor: pointer; font-size: 1.5rem"
+          >&times;</span
+        >
+        <h3>حسابي</h3>
+      </div>
+      <div class="panel-content" style="padding: 20px">
+        <div class="info-group">
+          <label style="color: #666; font-size: 0.8rem">الاسم</label>
+          <input
+            type="text"
+            id="displayFullName"
+            readonly
+            style="
+              width: 100%;
+              background: transparent;
+              border: none;
+              border-bottom: 1px solid #333;
+              color: #fff;
+              padding: 5px 0;
+            "
+          />
+        </div>
+        <div class="info-group" style="margin-top: 15px">
+          <label style="color: #666; font-size: 0.8rem">الهاتف</label>
+          <input
+            type="text"
+            id="displayPhone"
+            readonly
+            style="
+              width: 100%;
+              background: transparent;
+              border: none;
+              border-bottom: 1px solid #333;
+              color: #fff;
+              padding: 5px 0;
+            "
+          />
+        </div>
+        <div class="info-group" style="margin-top: 15px">
+          <label style="color: #666; font-size: 0.8rem">العنوان</label>
+          <input
+            type="text"
+            id="displayAddress"
+            readonly
+            style="
+              width: 100%;
+              background: transparent;
+              border: none;
+              border-bottom: 1px solid #333;
+              color: #fff;
+              padding: 5px 0;
+            "
+          />
+        </div>
+      </div>
+    </div>
+    <div id="panelOverlay" class="panel-overlay"></div>
+
+    <footer
+      class="main-footer"
+      style="
+        background: #000;
+        color: #fff;
+        padding: 40px 0 20px;
+        font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;
+        direction: ltr;
+      "
+    >
+      <div
+        class="footer-container"
+        style="
+          max-width: 1200px;
+          margin: 0 auto;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          padding: 0 20px;
+        "
+      >
+        <div
+          class="footer-col"
+          style="flex: 1; min-width: 250px; margin-bottom: 30px"
+        >
+          <img
+            src="../img/sarasb.jpg"
+            alt="Sarab Logo"
+            class="footer-logo"
+            style="height: 50px; margin-bottom: 15px"
+          />
+          <p
+            style="
+              color: #bbb;
+              line-height: 1.6;
+              max-width: 280px;
+              font-size: 0.95rem;
+            "
+          >
+            سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر.
+          </p>
+        </div>
+
+        <div
+          class="footer-col"
+          style="flex: 1; min-width: 150px; margin-bottom: 30px"
+        >
+          <h4
+            style="
+              color: #e30613;
+              margin-bottom: 20px;
+              font-size: 1.1rem;
+              font-weight: bold;
+            "
+          >
+            روابط سريعة
+          </h4>
+          <ul style="list-style: none; padding: 0">
+            <li style="margin-bottom: 12px">
+              <a
+                href="#regular-products"
+                style="color: #bbb; text-decoration: none; transition: 0.3s"
+                >جميع العطور</a
+              >
+            </li>
+            <li style="margin-bottom: 12px">
+              <a
+                href="#special-offers-anchor"
+                style="color: #bbb; text-decoration: none; transition: 0.3s"
+                >العروض الحصرية</a
+              >
+            </li>
+            <li style="margin-bottom: 12px">
+              <a
+                href="#special-offers-anchor"
+                style="color: #bbb; text-decoration: none; transition: 0.3s"
+                >قصتنا</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="footer-col"
+          style="flex: 1; min-width: 200px; margin-bottom: 30px"
+        >
+          <h4
+            style="
+              color: #e30613;
+              margin-bottom: 20px;
+              font-size: 1.1rem;
+              font-weight: bold;
+            "
+          >
+            تواصل معنا
+          </h4>
+          <div
+            class="social-links"
+            style="display: flex; gap: 18px; margin-bottom: 20px"
+          >
+            <a
+              href="https://wa.me/201234567890?text=مرحباً%20سراب"
+              target="_blank"
+              title="واتساب"
+              style="color: #25d366; font-size: 1.5rem"
+              ><i class="fab fa-whatsapp"></i
+            ></a>
+            <a
+              href="https://facebook.com/your-page"
+              target="_blank"
+              title="فيسبوك"
+              style="color: #1877f2; font-size: 1.5rem"
+              ><i class="fab fa-facebook"></i
+            ></a>
+            <a
+              href="https://instagram.com/your-account"
+              target="_blank"
+              title="انستجرام"
+              style="color: #e4405f; font-size: 1.5rem"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://tiktok.com/@your-handle"
+              target="_blank"
+              title="تيك توك"
+              style="color: #fff; font-size: 1.5rem"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+          </div>
+          <a
+            href="https://wa.me/201234567890"
+            class="support-item"
+            style="
+              text-decoration: none;
+              color: #bbb;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              font-size: 0.9rem;
+            "
+          >
+            <i class="fas fa-headset" style="color: #e30613"></i>
+            <span>الدعم الفني المباشر</span>
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="footer-bottom"
+        style="
+          margin-top: 20px;
+          padding: 25px 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          text-align: center;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <p
+            style="
+              color: #888;
+              font-size: 0.85rem;
+              margin: 0;
+              letter-spacing: 0.5px;
+            "
+          >
+            جميع الحقوق محفوظة &copy;
+            <span style="color: #8e0000; font-weight: bold">Sarab</span> 2026
+          </p>
+
+          <div style="color: #666; font-size: 0.8rem; margin: 0">
+            تم تصميم وتطوير الموقع بواسطة
+            <a
+              href="#"
+              target="_blank"
+              style="
+                color: #8e0000;
+                text-decoration: none;
+                font-weight: bold;
+                border-bottom: 1px solid #8e0000;
+                padding-bottom: 2px;
+                transition: 0.3s;
+              "
+              >Qovox</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="../auth-status.js"></script>
+    <script type="module" src="../profile.js"></script>
+    <script type="module" src="car.js"></script>
+  </body>
+</html>
