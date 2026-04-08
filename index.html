@@ -92,190 +92,34 @@
     </style>
   </head>
   <body>
-    <div class="luxury-bg-wrapper">
-      <div class="mesh-gradient"></div>
-      <div class="glass-overlay"></div>
-    </div>
-
-    <aside class="sidebar" id="sidebar">
-      <div
-        class="sidebar-header"
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 20px;
-        "
-      >
-        <img
-          src="img/sarasb.jpg"
-          alt="Sarab Logo"
-          class="side-logo"
-          style="height: 40px"
-        />
-        <i
-          class="fas fa-times"
-          id="menuClose"
-          style="cursor: pointer; color: #e30613; font-size: 1.5rem"
-        ></i>
-      </div>
-
-      <div class="sidebar-content">
-        <h3
-          style="
-            color: #666;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            padding: 0 20px;
-          "
-        >
-          التصنيفات
-        </h3>
-        <ul class="side-links" style="list-style: none; padding: 0 20px">
-          <li style="margin-bottom: 20px">
-            <a href="index.html" style="color: #fff; text-decoration: none"
-              ><i class="fas fa-store" style="margin-left: 10px"></i>العطور
-              الأساسية</a
-            >
-          </li>
-          <li style="margin-bottom: 20px">
-            <a
-              href="#special-offers-anchor"
-              id="sideOffersLink"
-              style="color: #e30613; text-decoration: none; font-weight: bold"
-              ><i class="fas fa-percentage" style="margin-left: 10px"></i>العروض
-              الخاصة</a
-            >
-          </li>
-        </ul>
-
-        <div
-          class="sidebar-support"
-          style="
-            margin: 20px;
-            padding: 20px;
-            background: rgba(227, 6, 19, 0.05);
-            border-radius: 15px;
-          "
-        >
-          <h4 style="color: #e30613; margin-bottom: 10px">هل تواجه مشكلة؟</h4>
-          <p style="font-size: 0.85rem; color: #bbb">
-            نحن هنا لمساعدتك في أي استفسار عطرى أو تقني.
-          </p>
-          <div
-            class="support-actions"
-            style="
-              margin-top: 15px;
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-            "
-          >
-            <a
-              href="https://wa.me/201234567890"
-              class="support-item"
-              style="
-                text-decoration: none;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-              "
-              ><i class="fab fa-whatsapp" style="color: #25d366"></i
-              ><span>واتساب الدعم</span></a
-            >
-            <a
-              href="mailto:support@sarab.com"
-              class="support-item"
-              style="
-                text-decoration: none;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-              "
-              ><i class="far fa-envelope" style="color: #e30613"></i
-              ><span>البريد الإلكتروني</span></a
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="sidebar-footer" id="sidebarFooter">
-        <button
-          id="logoutBtnSide"
-          class="logout-link"
-          style="
-            width: 100%;
-            padding: 12px;
-            background: rgba(227, 6, 19, 0.1);
-            color: #ff4d4d;
-            border: 1px solid rgba(227, 6, 19, 0.2);
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-weight: bold;
-          "
-        >
-          <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
-        </button>
-      </div>
-    </aside>
-
-    <div class="overlay" id="overlay"></div>
-
     <header>
       <nav class="navbar">
         <div class="logo">
           <a href="index.html"><img src="img/sarasb.jpg" alt="Sarab Logo" /></a>
         </div>
 
-        <ul class="nav-links">
-          <li><a href="index.html">المتجر</a></li>
-          <li><a href="#">متابعة الطلبات</a></li>
-        </ul>
+<ul class="nav-links">
+  <li><a href="index.html" id="store-nav-link">المتجر</a></li>
+  <li>
+    <a href="#" id="tracking-nav-link" onclick="window.showTrackingPage(event)">متابعة الطلبات</a>
+  </li>
+</ul>
 
-        <div class="nav-icons">
-          <i class="fas fa-search" style="cursor: pointer"></i>
-          <div
-            class="cart-icon-wrapper"
-            style="position: relative; display: inline-block"
-          >
-            <a href="car/car.html" style="color: #fff; text-decoration: none">
-              <i class="fas fa-shopping-cart"></i>
-              <span
-                id="cartCount"
-                style="
-                  position: absolute;
-                  top: -10px;
-                  right: -12px;
-                  background: #e30613;
-                  color: #fff;
-                  font-size: 0.65rem;
-                  padding: 2px 6px;
-                  border-radius: 50%;
-                  font-weight: bold;
-                  border: 2px solid #000;
-                "
-                >0</span
-              >
-            </a>
-          </div>
+<div class="nav-icons">
+  <div class="search-wrapper">
+    <input type="text" id="search-input" oninput="window.searchSarabProducts()" placeholder="ابحث...">
+    <i class="fas fa-search" onclick="window.searchSarabProducts()"></i>
+  </div>
 
-          <div
-            id="auth-area"
-            class="nav-auth"
-            style="
-              display: flex;
-              align-items: center;
-              gap: 12px;
-              margin-right: 10px;
-            "
-          ></div>
+  <div class="cart-icon-wrapper" style="position: relative; display: inline-block">
+    <a href="car/car.html" style="color: #fff; text-decoration: none">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cartCount" style="position: absolute; top: -10px; right: -12px; background: #e30613; color: #fff; font-size: 0.65rem; padding: 2px 6px; border-radius: 50%; font-weight: bold; border: 2px solid #000;">0</span>
+    </a>
+  </div>
+
+  <div id="auth-area" class="nav-auth" style="display: flex; align-items: center; gap: 12px; margin-right: 10px;"></div>
+</div>
 
           <i
             class="fas fa-bars"
@@ -285,21 +129,155 @@
         </div>
       </nav>
     </header>
+<main id="page-content" style="padding-top: 145px;"> <div class="luxury-bg-wrapper">
+            <div class="mesh-gradient"></div>
+            <div class="glass-overlay"></div>
+        </div>
 
-    <main class="container">
-      <section id="regular-products">
-        <h2 class="section-title-fakhama">المجموعة <span>الأساسية</span></h2>
-        <div id="products-container" class="perfumes-grid"></div>
-      </section>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+                <img src="img/sarasb.jpg" alt="Sarab Logo" class="side-logo" style="height: 40px" />
+                <i class="fas fa-times" id="menuClose" style="cursor: pointer; color: #e30613; font-size: 1.5rem"></i>
+            </div>
 
-      <div id="special-offers-anchor" class="section-divider"></div>
+            <div class="sidebar-content">
+                <h3 style="color: #666; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; padding: 0 20px;">
+                    التصنيفات
+                </h3>
+                <ul class="side-links" style="list-style: none; padding: 0 20px">
+                    <li style="margin-bottom: 20px">
+                        <a href="index.html" style="color: #fff; text-decoration: none">
+                            <i class="fas fa-store" style="margin-left: 10px"></i>العطور الأساسية
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 20px">
+                        <a href="#special-offers-anchor" id="sideOffersLink" style="color: #e30613; text-decoration: none; font-weight: bold">
+                            <i class="fas fa-percentage" style="margin-left: 10px"></i>العروض الخاصة
+                        </a>
+                    </li>
+                </ul>
 
-      <section class="special-offers-section">
-        <h2 class="section-title-fakhama">عروض <span>حصرية</span></h2>
-        <div id="offers-container" class="perfumes-grid"></div>
-      </section>
+                <div class="sidebar-support" style="margin: 20px; padding: 20px; background: rgba(227, 6, 19, 0.05); border-radius: 15px;">
+                    <h4 style="color: #e30613; margin-bottom: 10px">هل تواجه مشكلة؟</h4>
+                    <p style="font-size: 0.85rem; color: #bbb">نحن هنا لمساعدتك في أي استفسار عطرى أو تقني.</p>
+                    <div class="support-actions" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                        <a href="https://wa.me/201148906594" class="support-item" style="text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px;">
+                            <i class="fab fa-whatsapp" style="color: #25d366"></i><span>واتساب الدعم</span>
+                        </a>
+                        <a href="mailto:support@sarab.com" class="support-item" style="text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px;">
+                            <i class="far fa-envelope" style="color: #e30613"></i><span>البريد الإلكتروني</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer" id="sidebarFooter">
+                <button id="logoutBtnSide" class="logout-link" style="width: 100%; padding: 12px; background: rgba(227, 6, 19, 0.1); color: #ff4d4d; border: 1px solid rgba(227, 6, 19, 0.2); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold;">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                </button>
+            </div>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="container">
+            <section id="regular-products">
+                <h2 class="section-title-fakhama">المجموعة <span>الأساسية</span></h2>
+                <div id="products-container" class="perfumes-grid"></div>
+            </section>
+
+            <div id="special-offers-anchor" class="section-divider"></div>
+
+            <section class="special-offers-section">
+                <h2 class="section-title-fakhama">عروض <span>حصرية</span></h2>
+                <div id="offers-container" class="perfumes-grid"></div>
+            </section>
+        </div>
     </main>
 
+   
+
+    <div id="order-details-modal" class="sarab-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="window.closeOrderDetails()">&times;</span>
+
+            <div class="receipt-header">
+                <img src="img/sarasb.jpg" alt="Sarab Logo" class="receipt-logo" />
+                <h2>تفاصيل طلبك</h2>
+                <p id="display-order-id" class="ref-number">#SRB-00000</p>
+            </div>
+
+            <div class="modal-grid">
+                <div class="status-tracker-box">
+                    <div class="stepper">
+                        <div class="step" id="step-pending">
+                            <div class="circle"><i class="fas fa-check"></i></div>
+                            <span>تم الطلب</span>
+                        </div>
+                        <div class="step" id="step-processing">
+                            <div class="circle"><i class="fas fa-flask"></i></div>
+                            <span>قيد التعبئة</span>
+                        </div>
+                        <div class="step" id="step-shipped">
+                            <div class="circle"><i class="fas fa-truck"></i></div>
+                            <span>في الطريق</span>
+                        </div>
+                        <div class="step" id="step-delivered">
+                            <div class="circle"><i class="fas fa-home"></i></div>
+                            <span>تم الاستلام</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class="fas fa-user-tie"></i> بيانات العميل</h3>
+                    <p><strong>الاسم:</strong> <span id="display-user-name">---</span></p>
+                    <p><strong>العنوان:</strong> <span id="display-user-address">---</span></p>
+                    <p><strong>الهاتف:</strong> <span id="display-user-phone">---</span></p>
+                    <p><strong>موعد الوصول المتوقع:</strong> <span id="display-arrival-date">---</span></p>
+                </div>
+
+                <div class="receipt-card">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> ملخص العملية</h3>
+                    <div class="receipt-row">
+                        <span>العطر:</span>
+                        <span id="tracking-car-model">---</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>الحجم:</span>
+                        <span id="tracking-car-color">---</span>
+                    </div>
+                    <hr />
+                    <div class="receipt-row total">
+                        <span>الإجمالي:</span>
+                        <span id="total-price">0 ج.م</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-print" onclick="window.print()">
+                    <i class="fas fa-print"></i> تحميل الفاتورة
+                </button>
+                <a href="https://wa.me/201148906594" class="btn-support" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fab fa-whatsapp"></i> مساعدة فورية عبر واتساب
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="no-results-message" class="no-search-results" style="display: none;">
+        <div class="no-results-content">
+            <i class="fas fa-search-minus"></i>
+            <h3>هذا العنصر غير موجود </h3>
+            <p>لم نجد عطر مطابِق لبحثك في بحث سراب، تواصل مع الدعم الفني!</p>
+            <a href="https://wa.me/201148906594" target="_blank" class="btn-support">
+                <i class="fab fa-whatsapp"></i> 
+                <span>تواصل مع الدعم الفني</span>
+            </a>
+        </div>
+    </div>
+    
     <footer
       class="main-footer"
       style="
@@ -401,7 +379,7 @@
             style="display: flex; gap: 18px; margin-bottom: 20px"
           >
             <a
-              href="https://wa.me/201234567890?text=مرحباً%20سراب"
+              href="https://wa.me/201148906594"
               target="_blank"
               title="واتساب"
               style="color: #25d366; font-size: 1.5rem"
@@ -415,14 +393,14 @@
               ><i class="fab fa-facebook"></i
             ></a>
             <a
-              href="https://instagram.com/your-account"
+              href="https://www.instagram.com/sarab.global/#"
               target="_blank"
               title="انستجرام"
               style="color: #e4405f; font-size: 1.5rem"
               ><i class="fab fa-instagram"></i
             ></a>
             <a
-              href="https://tiktok.com/@your-handle"
+              href="https://l.instagram.com/?u=https%3A%2F%2Fwww.tiktok.com%2F%40sarab.global%3F_r%3D1%26_t%3DZS-94FFeztfEzE%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGneDwN7ARxlJ-j7KO06KKWV3IQST3E2uCP9TMTcMKe59DvCH20wM1R6RWmz78_aem_bMQT8TrCkRqW0q7kCVZFPw&e=AT7M1m4EKl72a5e_K8t4PI9Zvb6zSTMou3qkZV6_R8smDLwJ70UAj0wem6fs_bucULg977Fk5szdf67Bq9jNOQbE6Tr1BcK8U5G5BHzDGA"
               target="_blank"
               title="تيك توك"
               style="color: #fff; font-size: 1.5rem"
@@ -430,7 +408,7 @@
             ></a>
           </div>
           <a
-            href="https://wa.me/201234567890"
+            href="https://wa.me/201148906594"
             class="support-item"
             style="
               text-decoration: none;
@@ -595,6 +573,85 @@
       </div>
     </div>
     <div id="panelOverlay" class="panel-overlay"></div>
+    <div id="productDetailsModal" class="sarab-modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="window.closeProductDetails()"
+          >&times;</span
+        >
+
+        <div
+          class="product-details-container"
+          style="display: flex; flex-wrap: wrap; gap: 30px; padding: 20px"
+        >
+          <div class="product-details-image" style="flex: 1; min-width: 250px">
+            <img
+              id="modalProductImage"
+              src=""
+              alt="Product"
+              style="
+                width: 100%;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+              "
+            />
+          </div>
+
+          <div
+            class="product-details-info"
+            style="flex: 1; min-width: 250px; text-align: right"
+          >
+            <h2
+              id="modalProductName"
+              style="color: #fff; font-size: 2rem; margin-bottom: 10px"
+            ></h2>
+            <p
+              id="modalProductDescription"
+              style="color: #bbb; line-height: 1.6; margin-bottom: 20px"
+            ></p>
+
+            <div
+              class="meta-info"
+              style="
+                display: flex;
+                gap: 20px;
+                margin-bottom: 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 15px;
+              "
+            >
+              <span style="color: #e30613"
+                ><i class="fas fa-expand-arrows-alt"></i> الحجم:
+                <span id="modalProductSize"></span> مل</span
+              >
+            </div>
+
+            <div class="price-box" style="margin-bottom: 30px">
+              <span style="color: #fff; font-size: 1.8rem; font-weight: bold"
+                ><span id="modalProductPrice"></span> ج.م</span
+              >
+            </div>
+
+            <button
+              id="modalAddToCartBtn"
+              class="add-to-cart-btn"
+              style="
+                width: 100%;
+                padding: 15px;
+                background: #e30613;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 1.1rem;
+              "
+            >
+              <i class="fas fa-shopping-cart"></i> إضافة للسلة الآن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="sarab.js"></script>
     <script type="module" src="auth-status.js"></script>

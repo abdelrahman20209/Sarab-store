@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="img/LOGO.png" />
+    <link rel="apple-touch-icon" href="img/LOGO.png" />
+    <meta name="description" content="ملخص الطلب في متجر سراب" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="checkout-style.css" />
+  </head>
+  <body>
+    <div class="checkout-container">
+      <div class="checkout-logo">
+        <img src="../img/sarasb.jpg" alt="Sarab Logo" />
+      </div>
+
+      <div class="receipt-card">
+        <div class="receipt-header">
+          <h3>ملخص الطلب</h3>
+          <p id="orderDate"></p>
+          <div class="reference-badge">
+            رقم مرجعي: <span id="refNumber">#SRB-0000</span>
+          </div>
+        </div>
+
+        <div class="receipt-body">
+          <div id="orderItemsList"></div>
+
+          <hr class="receipt-divider" />
+
+          <div class="total-section">
+            <span>إجمالي المبلغ المستحق:</span>
+            <span id="finalTotal" class="total-price">0 ج.م</span>
+          </div>
+        </div>
+
+        <div class="payment-instructions">
+          <h4><i class="fas fa-wallet"></i> طريقة الدفع (فودافون كاش)</h4>
+          <div class="cash-number" onclick="copyNumber()">
+            <span id="vodafoneNumber">01148906594</span>
+            <i class="far fa-copy"></i>
+          </div>
+          <p class="hint">
+            * برجاء تحويل المبلغ وتصوير الشاشة و تصوير عمليه الدفع(Screenshot)
+          </p>
+
+          <a
+            href="https://wa.me/201148906594"
+            target="_blank"
+            class="whatsapp-btn"
+          >
+            <i class="fab fa-whatsapp"></i> إرسال إيصال الدفع عبر واتساب
+          </a>
+        </div>
+      </div>
+
+      <div class="checkout-actions">
+        <button class="btn-confirm" id="completeOrderBtn">
+          <i class="fas fa-check-circle"></i> تم إتمام التحويل والطلب
+        </button>
+        <button class="btn-back" onclick="history.back()">
+          <i class="fas fa-edit"></i> العودة لتعديل الأوردر
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="checkout.js"></script>
+
+    <script>
+      // دالة بسيطة لنسخ الرقم
+      function copyNumber() {
+        const num = document.getElementById("vodafoneNumber").innerText;
+        navigator.clipboard.writeText(num);
+        alert("تم نسخ الرقم بنجاح! ✅");
+      }
+    </script>
+  </body>
+</html>
