@@ -20,6 +20,8 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+import { DEFAULTS, DEFAULT_ANNOUNCEMENT, safeUrl } from "./site-schema.js";
+
 // 1. الإعدادات
 const firebaseConfig = {
   apiKey: "AIzaSyD46OEVC7BJZPihUmeWSlMmMjmMoXorn1o",
@@ -201,34 +203,44 @@ function getGenderIcon(gender) {
   return '<div class="gender-icon-container"><i class="fas fa-venus-mars icon-unisex"></i></div>';
 }
 
+let SITE = { ...DEFAULTS };
 let allProducts = [];
 let activeFilter = "all";
 
+const esc = (v) =>
+  String(v ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]);
+const T = (k) => (SITE[k] != null && SITE[k] !== "" ? SITE[k] : DEFAULTS[k] ?? "");
+const priceOf = (p) => (p.hasDiscount ? p.price - p.price * (p.discountPercentage / 100) : p.price);
+
 function productCardHTML(id, p, i) {
-  const finalPrice = p.hasDiscount ? p.price - p.price * (p.discountPercentage / 100) : p.price;
-  const name = String(p.name || "").replace(/'/g, "\\'");
-  const image = String(p.image || "img/placeholder.jpg").replace(/'/g, "\\'");
+  const finalPrice = priceOf(p);
+  const img = esc(p.image || "img/placeholder.jpg");
   return `
-    <div class="product-card" data-name="${(p.name || "").toLowerCase()}" data-gender="${p.gender || "unisex"}" style="animation-delay:${Math.min(i, 8) * 70}ms">
-      ${p.hasDiscount ? `<div class="discount-badge">خصم ${p.discountPercentage}%</div>` : ""}
-      <div class="product-image" onclick="showProductDetails('${id}')">
-        <img src="${p.image || "img/placeholder.jpg"}" alt="${p.name}" loading="lazy">
+    <div class="product-card" data-name="${esc((p.name || "").toLowerCase())}" data-gender="${esc(p.gender || "unisex")}" style="animation-delay:${Math.min(i, 8) * 70}ms">
+      ${p.hasDiscount ? `<div class="discount-badge">خصم ${esc(p.discountPercentage)}%</div>` : ""}
+      <div class="product-image" onclick="showProductDetails('${esc(id)}')">
+        <img src="${img}" alt="${esc(p.name)}" loading="lazy">
         ${getGenderIcon(p.gender)}
       </div>
       <div class="product-info">
-        <h3 onclick="showProductDetails('${id}')">${p.name}</h3>
+        <h3 onclick="showProductDetails('${esc(id)}')">${esc(p.name)}</h3>
         <div class="price-area">
           <span class="current-price">${finalPrice.toFixed(0)} ج.م</span>
-          ${p.hasDiscount ? `<span class="old-price">${p.price.toFixed(0)} ج.م</span>` : ""}
+          ${p.hasDiscount ? `<span class="old-price">${Number(p.price).toFixed(0)} ج.م</span>` : ""}
         </div>
-        <p class="stock-info ${p.inStock ? "in" : "out"}">${p.inStock ? "متوفر حالياً" : "نفذت الكمية"}</p>
+        <p class="stock-info ${p.inStock ? "in" : "out"}">${esc(p.inStock ? T("txt_in") : T("txt_out"))}</p>
         <div class="card-btns">
-          <button class="add-to-cart-btn" ${!p.inStock ? "disabled" : ""} onclick="addToSarabCart('${id}', '${name}', ${finalPrice}, '${image}')">${p.inStock ? "إضافة للسلة" : "نفذت"}</button>
-          <button class="view-details-btn" aria-label="تفاصيل" onclick="showProductDetails('${id}')"><i class="fas fa-eye"></i></button>
+          <button class="add-to-cart-btn" ${!p.inStock ? "disabled" : ""} onclick="addProductById('${esc(id)}')">${esc(p.inStock ? T("txt_add") : T("txt_out"))}</button>
+          <button class="view-details-btn" aria-label="تفاصيل" onclick="showProductDetails('${esc(id)}')"><i class="fas fa-eye"></i></button>
         </div>
       </div>
     </div>`;
 }
+
+window.addProductById = (id) => {
+  const x = allProducts.find((a) => a.id === id);
+  if (x) window.addToSarabCart(id, x.p.name, priceOf(x.p), x.p.image || "");
+};
 
 function renderProducts() {
   const productsContainer = document.getElementById("products-container");
@@ -261,6 +273,7 @@ async function loadSarabProducts() {
     const querySnapshot = await getDocs(collection(db, "products"));
     allProducts = querySnapshot.docs.map((d) => ({ id: d.id, p: d.data() }));
     renderProducts();
+    loadSections();
   } catch (error) {
     console.error("❌ فشل جلب المنتجات:", error);
     productsContainer.innerHTML = "<p class='empty-msg'>تعذّر تحميل العطور، حاول مرة أخرى.</p>";
@@ -363,3 +376,134 @@ async function updateCartBadge(uid) {
 
 document.getElementById("panelOverlay")?.addEventListener("click", window.closeProductDetails);
 window.addEventListener("DOMContentLoaded", loadSarabProducts);
+
+/* ==========================================================
+   محتوى الموقع من لوحة التحكم: نصوص + صور + إعلان + أقسام
+   ========================================================== */
+const $id = (i) => document.getElementById(i);
+
+function applySite() {
+  document.querySelectorAll("[data-cms]").forEach((el) => {
+    const v = SITE[el.dataset.cms];
+    if (v != null && v !== "") el.textContent = v;
+  });
+  document.querySelectorAll("[data-cms-img]").forEach((el) => {
+    const v = safeUrl(SITE[el.dataset.cmsImg]);
+    if (v) el.src = v;
+  });
+  document.querySelectorAll("[data-cms-ph]").forEach((el) => {
+    const v = SITE[el.dataset.cmsPh];
+    if (v) el.placeholder = v;
+  });
+  const wa = String(SITE.whatsapp || DEFAULTS.whatsapp).replace(/\D/g, "");
+  document.querySelectorAll("[data-wa]").forEach((a) => (a.href = `https://wa.me/${wa}`));
+  document.querySelectorAll("[data-social]").forEach((a) => {
+    const k = a.dataset.social;
+    if (k === "email") { a.href = `mailto:${SITE.email || DEFAULTS.email}`; return; }
+    const url = safeUrl(SITE[k]);
+    a.hidden = !url;
+    if (url) a.href = url;
+  });
+  // الشريط المتحرك: نكرر المحتوى لحلقة سلسة
+  const tr = $id("marqueeTrack");
+  if (tr) {
+    tr.querySelectorAll("[data-clone]").forEach((n) => n.remove());
+    const base = [...tr.children];
+    for (let r = 0; r < 3; r++) base.forEach((n) => { const c = n.cloneNode(true); c.dataset.clone = "1"; c.removeAttribute("data-cms"); tr.appendChild(c); });
+  }
+}
+
+let annTimer;
+function applyAnnouncement(raw) {
+  const a = { ...DEFAULT_ANNOUNCEMENT, ...(raw || {}) };
+  const bar = $id("announce");
+  if (!bar) return;
+  clearInterval(annTimer);
+  const exp = a.expiresAt ? new Date(a.expiresAt) : null;
+  const sig = [...(a.text + "|" + (a.expiresAt || ""))].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7);
+  let closed = false;
+  try { closed = localStorage.getItem("sarab_ann_" + sig) === "1"; } catch {}
+  if (!a.enabled || !a.text || (exp && exp <= new Date()) || closed) { bar.hidden = true; return; }
+
+  bar.hidden = false;
+  bar.className = "announce " + (["gold", "black"].includes(a.style) ? a.style : "red") + (a.text.length > 70 ? " scroll" : "");
+  $id("annText").textContent = a.text;
+  const link = $id("annLink");
+  const url = safeUrl(a.link);
+  link.hidden = !url;
+  if (url) { link.href = url; link.textContent = a.linkText || "اعرف المزيد"; }
+  $id("annClose").onclick = () => { bar.hidden = true; try { localStorage.setItem("sarab_ann_" + sig, "1"); } catch {} };
+
+  const timer = $id("annTimer");
+  timer.hidden = !(a.showCountdown && exp);
+  if (a.showCountdown && exp) {
+    const tick = () => {
+      const ms = exp - Date.now();
+      if (ms <= 0) { bar.hidden = true; clearInterval(annTimer); return; }
+      const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60, sec = Math.floor(ms / 1e3) % 60;
+      const p = (n) => String(n).padStart(2, "0");
+      timer.textContent = (d ? d + "d " : "") + `${p(h)}:${p(m)}:${p(sec)}`;
+    };
+    tick();
+    annTimer = setInterval(tick, 1000);
+  }
+}
+
+async function loadSiteSettings() {
+  try {
+    const snap = await getDoc(doc(db, "settings", "site"));
+    if (snap.exists()) {
+      const d = snap.data();
+      SITE = { ...DEFAULTS, ...(d.texts || {}), ...(d.images || {}) };
+      applySite();
+      applyAnnouncement(d.announcement);
+      if (allProducts.length) { renderProducts(); loadSections(); }
+      return;
+    }
+  } catch (e) { console.warn("settings:", e.message); }
+  applySite();
+  applyAnnouncement(null);
+}
+
+async function loadSections() {
+  const host = $id("custom-sections");
+  if (!host) return;
+  try {
+    const snap = await getDocs(collection(db, "sections"));
+    const secs = snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter((x) => x.active !== false).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    host.innerHTML = secs.map((sec) => {
+      const items = (sec.productIds || []).map((id) => allProducts.find((x) => x.id === id)).filter(Boolean);
+      if (!items.length) return "";
+      return `
+      <section class="rail-section">
+        <div class="wrap">
+          <div class="rail-head">
+            <div>${sec.subtitle ? `<div class="kicker">${esc(sec.subtitle)}</div>` : ""}<h2>${esc(sec.title)}</h2></div>
+            <div class="rail-nav">
+              <button data-rail="prev" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+              <button data-rail="next" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
+            </div>
+          </div>
+          <div class="rail">${items.map((x, i) => productCardHTML(x.id, x.p, i)).join("")}</div>
+        </div>
+      </section>`;
+    }).join("");
+  } catch (e) { console.warn("sections:", e.message); }
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-rail]");
+  if (b) {
+    const rail = b.closest(".wrap").querySelector(".rail");
+    const dir = b.dataset.rail === "next" ? -1 : 1; // الصفحة RTL
+    rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: "smooth" });
+    return;
+  }
+  const go = e.target.closest("[data-filter-go]");
+  if (go) {
+    const chip = document.querySelector(`#categoryChips .chip[data-filter="${go.dataset.filterGo}"]`);
+    chip?.click();
+  }
+});
+
+window.addEventListener("DOMContentLoaded", loadSiteSettings);

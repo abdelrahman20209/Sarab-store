@@ -211,7 +211,7 @@ body::before {
 .eyebrow::before, .eyebrow::after { content: ""; width: 28px; height: 1px; background: var(--gold); opacity: 0.6; }
 .hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 11vw, 5.6rem);
+  font-size: clamp(2.6rem, 10vw, 4.8rem);
   line-height: 1.12; font-weight: 700; margin: 14px 0 16px;
 }
 .hero h1 em { font-style: normal; color: var(--red); }
@@ -260,7 +260,8 @@ body::before {
 .section-head { text-align: center; margin-bottom: 30px; }
 .section-head .kicker { font-family: var(--font-en); font-style: italic; color: var(--gold); letter-spacing: 4px; font-size: 0.95rem; text-transform: uppercase; }
 .section-head h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); font-weight: 700; margin-top: 4px; }
-.section-head h2 span { color: var(--red); }
+.section-head h2 span { color: inherit; }
+.section-head h2 .em { color: var(--red); }
 .section-head .rule { width: 64px; height: 2px; margin: 14px auto 0; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
 
 /* category chips */
@@ -545,3 +546,60 @@ body::before {
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ==========================================================
+   Announcement bar (controlled from admin)
+   ========================================================== */
+.announce { position: relative; z-index: 1002; display: flex; align-items: center; justify-content: center; min-height: 38px; padding: 6px 44px; font-size: 0.82rem; color: #fff; background: var(--red-deep); overflow: hidden; }
+.announce.gold { background: linear-gradient(90deg, #8a6a2c, var(--gold), #8a6a2c); color: #1a1204; }
+.announce.black { background: #000; color: var(--text); border-bottom: 1px solid var(--gold-soft); }
+.announce[hidden] { display: none; }
+.announce-in { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px 12px; min-width: 0; max-width: 100%; line-height: 1.5; }
+.ann-track { min-width: 0; }
+.announce.scroll .ann-track { display: block; width: min(80vw, 760px); overflow: hidden; white-space: nowrap; }
+.announce.scroll #annText { display: inline-block; padding-inline-start: 100%; animation: annScroll 18s linear infinite; }
+@keyframes annScroll { to { transform: translateX(100%); } }
+.announce a { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.ann-timer { font-family: ui-monospace, monospace; font-size: 0.78rem; padding: 2px 10px; border-radius: 50px; background: rgba(0, 0, 0, 0.28); white-space: nowrap; direction: ltr; }
+.ann-x { position: absolute; inset-inline-end: 6px; top: 50%; translate: 0 -50%; width: 34px; height: 34px; display: grid; place-items: center; opacity: 0.8; }
+.ann-x:hover { opacity: 1; }
+
+/* ==========================================================
+   Category tiles (Ibraq / Qurashi style)
+   ========================================================== */
+.section-head h2 .em { color: var(--red); }
+.cats { padding-top: 56px; }
+.cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.cat-tile {
+  position: relative; display: block; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, #fff, var(--cream) 85%);
+  border: 1px solid var(--gold-soft); isolation: isolate;
+  transition: transform 0.6s var(--ease), box-shadow 0.6s;
+}
+.cat-tile img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; mix-blend-mode: multiply; transition: transform 1s var(--ease); }
+.cat-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(5, 5, 5, 0.92)); z-index: 1; }
+.cat-tile span { position: absolute; z-index: 2; inset-inline: 0; bottom: 16px; text-align: center; font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.5px; }
+.cat-tile span::after { content: ""; display: block; width: 28px; height: 2px; margin: 6px auto 0; background: var(--red); transition: width 0.5s var(--ease); }
+.cat-tile:hover { transform: translateY(-6px); box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6); }
+.cat-tile:hover img { transform: scale(1.08); }
+.cat-tile:hover span::after { width: 64px; }
+
+/* ==========================================================
+   Horizontal rails (sections created in admin)
+   ========================================================== */
+.rail-section { padding: 52px 0 8px; }
+.rail-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.rail-head .kicker { font-family: var(--font-en); font-style: italic; color: var(--gold); letter-spacing: 3px; font-size: 0.9rem; text-transform: uppercase; }
+.rail-head h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 5vw, 2.3rem); line-height: 1.2; }
+.rail-head h2::after { content: ""; display: block; width: 44px; height: 3px; margin-top: 10px; background: var(--red); }
+.rail-nav { display: none; gap: 8px; }
+.rail-nav button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--ink-3); transition: 0.3s; }
+.rail-nav button:hover { border-color: var(--gold); color: var(--gold); }
+.rail {
+  display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  margin: 0 -20px; padding: 4px 20px 18px; scroll-padding-inline: 20px;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail .product-card { flex: 0 0 62%; max-width: 270px; scroll-snap-align: start; }
+@media (min-width: 700px) { .rail { margin: 0 -32px; padding-inline: 32px; } .rail .product-card { flex-basis: 30%; } .rail-nav { display: flex; } }
+@media (min-width: 1024px) { .rail { margin: 0; padding-inline: 0; } .rail .product-card { flex-basis: calc((100% - 56px) / 4); max-width: none; } .cat-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }

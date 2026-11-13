@@ -28,9 +28,13 @@
     <link rel="stylesheet" href="luxe.css" />
   </head>
   <body>
-    <div class="announce">
-      للطلب والاستفسار تواصل معنا مباشرة عبر
-      <a href="https://wa.me/201148906594" target="_blank" rel="noopener">واتساب</a>
+    <div class="announce red" id="announce">
+      <div class="announce-in">
+        <span class="ann-track"><span id="annText">للطلب والاستفسار تواصل معنا مباشرة عبر واتساب</span></span>
+        <a id="annLink" href="#" hidden></a>
+        <span id="annTimer" class="ann-timer" hidden></span>
+      </div>
+      <button id="annClose" class="ann-x" aria-label="إغلاق"><i class="fas fa-xmark"></i></button>
     </div>
 
     <!-- ===== Header ===== -->
@@ -39,9 +43,9 @@
         <div class="nav-start">
           <button class="icon-btn" id="menuOpen" aria-label="القائمة"><i class="fas fa-bars-staggered"></i></button>
           <ul class="nav-links">
-            <li><a href="index.html" id="store-nav-link">المتجر</a></li>
-            <li><a href="#special-offers-anchor">العروض</a></li>
-            <li><a href="#" id="tracking-nav-link" onclick="window.showTrackingPage(event)">متابعة الطلبات</a></li>
+            <li><a href="index.html" id="store-nav-link" data-cms="nav_store">المتجر</a></li>
+            <li><a href="#special-offers-anchor" data-cms="nav_offers">العروض</a></li>
+            <li><a href="#" id="tracking-nav-link" onclick="window.showTrackingPage(event)" data-cms="nav_orders">متابعة الطلبات</a></li>
           </ul>
         </div>
 
@@ -61,7 +65,7 @@
       <div class="search-bar" id="searchBar">
         <div class="field">
           <i class="fas fa-magnifying-glass"></i>
-          <input type="search" id="search-input" placeholder="ابحث عن عطرك..." oninput="window.searchSarabProducts()" />
+          <input type="search" id="search-input" placeholder="ابحث عن عطرك..." data-cms-ph="search_placeholder" oninput="window.searchSarabProducts()" />
         </div>
       </div>
     </header>
@@ -73,7 +77,7 @@
         <button id="menuClose" aria-label="إغلاق"><i class="fas fa-xmark"></i></button>
       </div>
       <div class="sidebar-content">
-        <h3>التصنيفات</h3>
+        <h3 data-cms="side_title">التصنيفات</h3>
         <ul class="side-links">
           <li><a href="#home-view"><i class="fas fa-house"></i>الرئيسية</a></li>
           <li><a href="#regular-products"><i class="fas fa-droplet"></i>المجموعة الأساسية</a></li>
@@ -83,11 +87,11 @@
         </ul>
 
         <div class="sidebar-support">
-          <h4>هل تحتاج مساعدة؟</h4>
-          <p>نحن هنا لمساعدتك في أي استفسار عطري أو تقني.</p>
+          <h4 data-cms="side_help_title">هل تحتاج مساعدة؟</h4>
+          <p data-cms="side_help_text">نحن هنا لمساعدتك في أي استفسار عطري أو تقني.</p>
           <div class="support-actions">
-            <a href="https://wa.me/201148906594" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color: #25d366"></i><span>واتساب الدعم</span></a>
-            <a href="mailto:support@sarab.com"><i class="far fa-envelope" style="color: var(--red)"></i><span>البريد الإلكتروني</span></a>
+            <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color: #25d366"></i><span>واتساب الدعم</span></a>
+            <a href="mailto:support@sarab.com" data-social="email"><i class="far fa-envelope" style="color: var(--red)"></i><span>البريد الإلكتروني</span></a>
           </div>
         </div>
       </div>
@@ -101,20 +105,20 @@
         <section class="hero">
           <div class="wrap hero-grid">
             <div class="hero-copy">
-              <span class="eyebrow">Sarab Perfumes</span>
-              <h1>عطرٌ يترك <em>أثراً</em><br />لا يُنسى</h1>
-              <p class="lead">سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر. اكتشف تشكيلة عطور اختيرت بعناية لتليق بحضورك.</p>
+              <span class="eyebrow" data-cms="hero_eyebrow">Sarab Perfumes</span>
+              <h1><span data-cms="hero_title_a">عطرٌ يترك</span> <em data-cms="hero_title_em">أثراً</em><br /><span data-cms="hero_title_b">لا يُنسى</span></h1>
+              <p class="lead" data-cms="hero_lead">سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر. اكتشف تشكيلة عطور اختيرت بعناية لتليق بحضورك.</p>
               <div class="hero-cta">
-                <a href="#regular-products" class="btn btn-red">تسوّق المجموعة <i class="fas fa-arrow-left"></i></a>
-                <a href="#special-offers-anchor" class="btn btn-ghost">العروض الحصرية</a>
+                <a href="#regular-products" class="btn btn-red"><span data-cms="hero_btn1">تسوّق المجموعة</span> <i class="fas fa-arrow-left"></i></a>
+                <a href="#special-offers-anchor" class="btn btn-ghost" data-cms="hero_btn2">العروض الحصرية</a>
               </div>
             </div>
 
             <div class="hero-visual" aria-hidden="true">
               <div class="hero-ring"></div>
-              <div class="arch a3"><img src="img/WhatsApp%20Image%202026-04-05%20at%207.16.15%20PM.jpeg" alt="" /></div>
-              <div class="arch a2"><img src="img/WhatsApp%20Image%202026-04-05%20at%207.18.11%20PM.jpeg" alt="" /></div>
-              <div class="arch a1"><img src="img/WhatsApp%20Image%202026-04-05%20at%207.17.17%20PM.jpeg" alt="" /></div>
+              <div class="arch a3"><img data-cms-img="hero_img3" src="img/WhatsApp%20Image%202026-04-05%20at%207.16.15%20PM.jpeg" alt="" /></div>
+              <div class="arch a2"><img data-cms-img="hero_img2" src="img/WhatsApp%20Image%202026-04-05%20at%207.18.11%20PM.jpeg" alt="" /></div>
+              <div class="arch a1"><img data-cms-img="hero_img1" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.17%20PM.jpeg" alt="" /></div>
             </div>
           </div>
           <div class="scroll-hint">SCROLL</div>
@@ -122,26 +126,45 @@
 
         <!-- ===== Marquee ===== -->
         <div class="marquee" aria-hidden="true">
-          <div class="marquee-track">
-            <span>سراب</span><span>SARAB</span><span>فخامة الشرق</span><span>عطور تدوم</span><span>سراب</span><span>SARAB</span><span>فخامة الشرق</span><span>عطور تدوم</span>
-            <span>سراب</span><span>SARAB</span><span>فخامة الشرق</span><span>عطور تدوم</span><span>سراب</span><span>SARAB</span><span>فخامة الشرق</span><span>عطور تدوم</span>
+          <div class="marquee-track" id="marqueeTrack">
+            <span data-cms="marquee_1">سراب</span><span data-cms="marquee_2">SARAB</span><span data-cms="marquee_3">فخامة الشرق</span><span data-cms="marquee_4">عطور تدوم</span>
           </div>
         </div>
+
+        <!-- ===== Shop by category ===== -->
+        <section class="section cats" id="cats">
+          <div class="wrap">
+            <div class="section-head reveal">
+              <div class="kicker" data-cms="cat_kicker">Shop By</div>
+              <h2><span data-cms="cat_title">تسوّق</span> <span class="em" data-cms="cat_title_em">حسب الفئة</span></h2>
+              <div class="rule"></div>
+            </div>
+            <div class="cat-grid">
+              <a href="#regular-products" class="cat-tile reveal" data-filter-go="men"><img data-cms-img="cat1_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.17%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat1_title">رجالي</span></a>
+              <a href="#regular-products" class="cat-tile reveal" data-filter-go="women"><img data-cms-img="cat2_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.16.15%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat2_title">حريمي</span></a>
+              <a href="#regular-products" class="cat-tile reveal" data-filter-go="unisex"><img data-cms-img="cat3_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.18.11%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat3_title">للجنسين</span></a>
+              <a href="#special-offers-anchor" class="cat-tile reveal"><img data-cms-img="cat4_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.45%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat4_title">العروض</span></a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Sections managed from the admin panel ===== -->
+        <div id="custom-sections"></div>
 
         <!-- ===== Collection ===== -->
         <section class="section" id="regular-products">
           <div class="wrap">
             <div class="section-head reveal">
-              <div class="kicker">The Collection</div>
-              <h2>المجموعة <span>الأساسية</span></h2>
+              <div class="kicker" data-cms="col_kicker">The Collection</div>
+              <h2><span data-cms="col_title">المجموعة</span> <span class="em" data-cms="col_title_em">الأساسية</span></h2>
               <div class="rule"></div>
             </div>
 
             <div class="chips reveal" id="categoryChips">
-              <button class="chip active" data-filter="all">الكل</button>
-              <button class="chip" data-filter="men">رجالي</button>
-              <button class="chip" data-filter="women">حريمي</button>
-              <button class="chip" data-filter="unisex">للجنسين</button>
+              <button class="chip active" data-filter="all" data-cms="chip_all">الكل</button>
+              <button class="chip" data-filter="men" data-cms="chip_men">رجالي</button>
+              <button class="chip" data-filter="women" data-cms="chip_women">حريمي</button>
+              <button class="chip" data-filter="unisex" data-cms="chip_unisex">للجنسين</button>
             </div>
 
             <div id="products-container" class="perfumes-grid">
@@ -152,7 +175,7 @@
               <i class="fas fa-magnifying-glass-minus"></i>
               <h3>لم نجد ما تبحث عنه</h3>
               <p>لا يوجد عطر مطابق لبحثك. تواصل معنا وسنساعدك في إيجاد العطر المناسب.</p>
-              <a href="https://wa.me/201148906594" target="_blank" rel="noopener" class="btn-support"><i class="fab fa-whatsapp"></i><span>تواصل مع الدعم</span></a>
+              <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener" class="btn-support"><i class="fab fa-whatsapp"></i><span>تواصل مع الدعم</span></a>
             </div>
           </div>
         </section>
@@ -162,11 +185,8 @@
           <div class="wrap">
             <div class="story-card reveal">
               <img src="img/LOGO.png" alt="Sarab" />
-              <h2>حكاية سراب</h2>
-              <p>
-                من سحر الشرق وأصالة العطور العربية وُلد سراب. نختار لك كل عطر ليحمل أثراً يبقى في الذاكرة،
-                بتغليف أنيق وتجربة شراء بسيطة من أول نظرة حتى باب بيتك.
-              </p>
+              <h2 data-cms="story_title">حكاية سراب</h2>
+              <p data-cms="story_text">من سحر الشرق وأصالة العطور العربية وُلد سراب. نختار لك كل عطر ليحمل أثراً يبقى في الذاكرة، بتغليف أنيق وتجربة شراء بسيطة من أول نظرة حتى باب بيتك.</p>
             </div>
           </div>
         </section>
@@ -176,8 +196,8 @@
         <section class="offers special-offers-section">
           <div class="wrap">
             <div class="section-head reveal">
-              <div class="kicker">Exclusive</div>
-              <h2>عروض <span>حصرية</span></h2>
+              <div class="kicker" data-cms="off_kicker">Exclusive</div>
+              <h2><span data-cms="off_title">عروض</span> <span class="em" data-cms="off_title_em">حصرية</span></h2>
               <div class="rule"></div>
             </div>
             <div id="offers-container" class="perfumes-grid"></div>
@@ -187,9 +207,9 @@
         <!-- ===== Values ===== -->
         <section class="wrap">
           <div class="values">
-            <div class="value reveal"><i class="fas fa-gem"></i><div><h4>تشكيلة مختارة</h4><p>عطور منتقاة بعناية لتناسب كل ذوق ومناسبة.</p></div></div>
-            <div class="value reveal"><i class="fas fa-gift"></i><div><h4>تغليف فاخر</h4><p>كل عطر يصلك في تغليف يليق بالهدية.</p></div></div>
-            <div class="value reveal"><i class="fab fa-whatsapp"></i><div><h4>دعم مباشر</h4><p>فريقنا جاهز للرد على استفساراتك عبر واتساب.</p></div></div>
+            <div class="value reveal"><i class="fas fa-gem"></i><div><h4 data-cms="val1_title">تشكيلة مختارة</h4><p data-cms="val1_text">عطور منتقاة بعناية لتناسب كل ذوق ومناسبة.</p></div></div>
+            <div class="value reveal"><i class="fas fa-gift"></i><div><h4 data-cms="val2_title">تغليف فاخر</h4><p data-cms="val2_text">كل عطر يصلك في تغليف يليق بالهدية.</p></div></div>
+            <div class="value reveal"><i class="fab fa-whatsapp"></i><div><h4 data-cms="val3_title">دعم مباشر</h4><p data-cms="val3_text">فريقنا جاهز للرد على استفساراتك عبر واتساب.</p></div></div>
           </div>
         </section>
 
@@ -197,9 +217,9 @@
         <section class="cta">
           <div class="wrap">
             <div class="cta-box reveal">
-              <h2>جاهز لتجد عطرك؟</h2>
-              <p>تصفح المجموعة الكاملة أو اسأل فريقنا ليرشحك للأنسب.</p>
-              <a href="https://wa.me/201148906594" target="_blank" rel="noopener" class="btn btn-wa"><i class="fab fa-whatsapp"></i> اطلب عبر واتساب</a>
+              <h2 data-cms="cta_title">جاهز لتجد عطرك؟</h2>
+              <p data-cms="cta_text">تصفح المجموعة الكاملة أو اسأل فريقنا ليرشحك للأنسب.</p>
+              <a href="https://wa.me/201148906594" target="_blank" rel="noopener" class="btn btn-wa" data-wa><i class="fab fa-whatsapp"></i> <span data-cms="cta_btn">اطلب عبر واتساب</span></a>
             </div>
           </div>
         </section>
@@ -254,7 +274,7 @@
         </div>
         <div class="modal-actions">
           <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> تحميل الفاتورة</button>
-          <a href="https://wa.me/201148906594" class="btn-support"><i class="fab fa-whatsapp"></i> مساعدة فورية عبر واتساب</a>
+          <a href="https://wa.me/201148906594" data-wa class="btn-support"><i class="fab fa-whatsapp"></i> مساعدة فورية عبر واتساب</a>
         </div>
       </div>
     </div>
@@ -301,10 +321,10 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <img src="img/sarasb.jpg" alt="Sarab" />
-            <p>سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر.</p>
+            <p data-cms="foot_blurb">سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر.</p>
           </div>
           <div>
-            <h4>روابط سريعة</h4>
+            <h4 data-cms="foot_links_title">روابط سريعة</h4>
             <ul>
               <li><a href="#regular-products">جميع العطور</a></li>
               <li><a href="#special-offers-anchor">العروض الحصرية</a></li>
@@ -313,17 +333,18 @@
             </ul>
           </div>
           <div>
-            <h4>تواصل معنا</h4>
+            <h4 data-cms="foot_contact_title">تواصل معنا</h4>
             <div class="social">
-              <a href="https://wa.me/201148906594" target="_blank" rel="noopener" title="واتساب"><i class="fab fa-whatsapp"></i></a>
-              <a href="https://www.instagram.com/sarab.global/" target="_blank" rel="noopener" title="انستجرام"><i class="fab fa-instagram"></i></a>
-              <a href="https://www.tiktok.com/@sarab.global" target="_blank" rel="noopener" title="تيك توك"><i class="fab fa-tiktok"></i></a>
+              <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener" title="واتساب"><i class="fab fa-whatsapp"></i></a>
+              <a href="https://www.instagram.com/sarab.global/" data-social="instagram" target="_blank" rel="noopener" title="انستجرام"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.tiktok.com/@sarab.global" data-social="tiktok" target="_blank" rel="noopener" title="تيك توك"><i class="fab fa-tiktok"></i></a>
+              <a href="#" data-social="facebook" target="_blank" rel="noopener" title="فيسبوك" hidden><i class="fab fa-facebook-f"></i></a>
             </div>
-            <a href="https://wa.me/201148906594" target="_blank" rel="noopener" style="color: #bdb7ac; font-size: 0.9rem"><i class="fas fa-headset" style="color: var(--red)"></i> الدعم الفني المباشر</a>
+            <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener" style="color: #bdb7ac; font-size: 0.9rem"><i class="fas fa-headset" style="color: var(--red)"></i> <span data-cms="foot_support">الدعم الفني المباشر</span></a>
           </div>
         </div>
         <div class="footer-bottom">
-          <span>جميع الحقوق محفوظة &copy; <b>Sarab</b> 2026</span>
+          <span><span data-cms="foot_copy">جميع الحقوق محفوظة</span> &copy; <b>Sarab</b> 2026</span>
           <span>تم تصميم وتطوير الموقع بواسطة <a href="#">Qovox</a></span>
         </div>
       </div>
@@ -331,10 +352,10 @@
 
     <!-- ===== Mobile bottom nav ===== -->
     <nav class="bottom-nav" aria-label="التنقل">
-      <a href="#home-view" class="active"><i class="fas fa-house"></i><span>الرئيسية</span></a>
-      <a href="#regular-products"><i class="fas fa-droplet"></i><span>العطور</span></a>
-      <a href="#special-offers-anchor"><i class="fas fa-tags"></i><span>العروض</span></a>
-      <a href="car/car.html"><i class="fas fa-bag-shopping"></i><span>السلة</span><span class="badge" id="cartCountMobile">0</span></a>
+      <a href="#home-view" class="active"><i class="fas fa-house"></i><span data-cms="bn_home">الرئيسية</span></a>
+      <a href="#regular-products"><i class="fas fa-droplet"></i><span data-cms="bn_perfumes">العطور</span></a>
+      <a href="#special-offers-anchor"><i class="fas fa-tags"></i><span data-cms="bn_offers">العروض</span></a>
+      <a href="car/car.html"><i class="fas fa-bag-shopping"></i><span data-cms="bn_cart">السلة</span><span class="badge" id="cartCountMobile">0</span></a>
     </nav>
 
     <div class="toast" id="toast"><i class="fas fa-circle-check"></i><span id="toastText"></span></div>

@@ -60,6 +60,8 @@
           <button data-view="dashboard" class="active"><i class="fas fa-chart-pie"></i> نظرة عامة</button>
           <button data-view="orders"><i class="fas fa-bag-shopping"></i> الطلبات <b class="badge" data-badge="orders" hidden>0</b></button>
           <button data-view="products"><i class="fas fa-droplet"></i> المنتجات</button>
+          <button data-view="sections"><i class="fas fa-layer-group"></i> أقسام الصفحة</button>
+          <button data-view="content"><i class="fas fa-pen-ruler"></i> محتوى الموقع</button>
           <button data-view="customers"><i class="fas fa-users"></i> العملاء</button>
         </nav>
         <div class="side-foot">
@@ -140,6 +142,53 @@
           <div id="productsGrid" class="pgrid"><div class="empty"><i class="fas fa-spinner fa-spin"></i><p>جاري التحميل...</p></div></div>
         </section>
 
+        <!-- ===== أقسام الصفحة ===== -->
+        <section id="view-sections" class="view">
+          <div class="toolbar">
+            <div class="note"><i class="fas fa-circle-info"></i> كل قسم يظهر في الصفحة الرئيسية كصف منتجات تختارها بنفسك.</div>
+            <button class="btn primary" data-act="add-section"><i class="fas fa-plus"></i> <span>قسم جديد</span></button>
+          </div>
+          <p class="muted count">إجمالي الأقسام: <b id="sectionsCount">0</b></p>
+          <div id="sectionsList" class="slist"></div>
+        </section>
+
+        <!-- ===== محتوى الموقع ===== -->
+        <section id="view-content" class="view">
+          <div class="card ann-card">
+            <div class="card-head"><h3><i class="fas fa-bullhorn"></i> شريط الإعلانات (أعلى الموقع)</h3></div>
+            <div id="annStatus" class="ann-status off"></div>
+            <div id="annPreview" class="ann-preview red"></div>
+            <div class="form">
+              <label class="check inline"><input type="checkbox" id="annEnabled" checked /><span></span> تفعيل الشريط</label>
+              <label for="annTextIn">نص الإعلان</label>
+              <textarea id="annTextIn" rows="2" placeholder="مثال: خصم 20% على كل العطور لمدة 3 أيام فقط!"></textarea>
+              <div class="row2">
+                <div><label for="annLinkIn">رابط (اختياري)</label><input id="annLinkIn" type="text" dir="ltr" placeholder="https://..." /></div>
+                <div><label for="annLinkTextIn">نص الرابط</label><input id="annLinkTextIn" type="text" placeholder="تسوّق الآن" /></div>
+              </div>
+              <label>لون الشريط</label>
+              <div class="seg" id="annStyle">
+                <button type="button" class="seg-btn active" data-v="red">أحمر</button>
+                <button type="button" class="seg-btn" data-v="gold">ذهبي</button>
+                <button type="button" class="seg-btn" data-v="black">أسود</button>
+              </div>
+              <label for="annDuration">مدة ظهور الشريط</label>
+              <select id="annDuration"></select>
+              <div id="annCustomWrap" hidden><label for="annCustomHours">عدد الساعات</label><input id="annCustomHours" type="number" inputmode="numeric" min="1" placeholder="مثال: 48" /></div>
+              <label class="check inline"><input type="checkbox" id="annCountdown" /><span></span> إظهار عدّاد تنازلي للزوار</label>
+              <div class="btn-row">
+                <button type="button" id="annPublish" class="btn primary"><i class="fas fa-rocket"></i> نشر الإعلان</button>
+                <button type="button" id="annStop" class="btn ghost"><i class="fas fa-circle-pause"></i> إيقاف</button>
+              </div>
+              <p class="muted tiny">المدة تبدأ من لحظة الضغط على «نشر»، ويختفي الشريط تلقائياً عند انتهائها.</p>
+            </div>
+          </div>
+
+          <div class="section-title"><h3>نصوص وصور الموقع</h3><p class="muted">اضغط على أي قسم لتعديل كلماته وصوره. التعديلات تظهر مباشرة بعد الحفظ.</p></div>
+          <div id="contentGroups" class="groups"></div>
+          <div class="savebar" id="savebar"><span><b id="dirtyCount">0</b> تعديل غير محفوظ</span><button id="saveContent" class="btn primary"><i class="fas fa-floppy-disk"></i> حفظ كل التغييرات</button></div>
+        </section>
+
         <!-- ===== العملاء ===== -->
         <section id="view-customers" class="view">
           <div class="toolbar">
@@ -154,6 +203,8 @@
         <button data-view="dashboard" class="active"><i class="fas fa-chart-pie"></i><span>الرئيسية</span></button>
         <button data-view="orders"><i class="fas fa-bag-shopping"></i><span>الطلبات</span><b class="badge" data-badge="orders" hidden>0</b></button>
         <button data-view="products"><i class="fas fa-droplet"></i><span>المنتجات</span></button>
+        <button data-view="sections"><i class="fas fa-layer-group"></i><span>الأقسام</span></button>
+        <button data-view="content"><i class="fas fa-pen-ruler"></i><span>المحتوى</span></button>
         <button data-view="customers"><i class="fas fa-users"></i><span>العملاء</span></button>
       </nav>
     </div>
@@ -208,6 +259,22 @@
         </div>
 
         <button type="submit" id="addBtn" class="btn primary block"><i class="fas fa-plus"></i> إضافة المنتج</button>
+      </form>
+    </section>
+
+    <section id="sectionSheet" class="sheet">
+      <button class="sheet-x" data-close aria-label="إغلاق"><i class="fas fa-xmark"></i></button>
+      <h3 id="sectionSheetTitle" class="sheet-title">قسم جديد</h3>
+      <form id="sectionForm" class="form">
+        <label for="secTitle">اسم القسم</label>
+        <input id="secTitle" type="text" required placeholder="مثال: الأكثر مبيعاً" />
+        <label for="secSub">عنوان فرعي (اختياري)</label>
+        <input id="secSub" type="text" placeholder="مثال: Best Sellers" />
+        <label class="check inline"><input type="checkbox" id="secActive" checked /><span></span> ظاهر في الموقع</label>
+        <label>اختر منتجات القسم (<b id="pickCount">0</b>)</label>
+        <div class="search small"><i class="fas fa-magnifying-glass"></i><input id="pickSearch" type="search" placeholder="ابحث في المنتجات" /></div>
+        <div id="pickList" class="picklist"></div>
+        <button type="submit" id="secSave" class="btn primary block"><i class="fas fa-floppy-disk"></i> حفظ القسم</button>
       </form>
     </section>
 

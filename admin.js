@@ -7,11 +7,15 @@ import { initOrders } from "./admin-orders.js";
 import { initProducts } from "./admin-products.js";
 import { initCustomers } from "./admin-customers.js";
 import { initStats, renderStats } from "./admin-stats.js";
+import { initSections } from "./admin-sections.js";
+import { initContent } from "./admin-content.js";
 
 const VIEWS = {
   dashboard: ["نظرة عامة", "ملخص أداء المتجر لحظة بلحظة"],
   orders: ["الطلبات", "متابعة الطلبات وتحديث حالاتها"],
   products: ["المنتجات", "إدارة العطور والأسعار والعروض"],
+  sections: ["أقسام الصفحة", "رتّب أقسام الصفحة الرئيسية واختر منتجاتها"],
+  content: ["محتوى الموقع", "الإعلانات وكل النصوص والصور"],
   customers: ["العملاء", "كل من تعامل مع سراب"],
 };
 
@@ -49,6 +53,9 @@ function startApp(user) {
   initProducts();
   initCustomers();
   initStats();
+  initSections();
+  initContent();
+  watchIdle();
   go(location.hash.slice(1) in VIEWS ? location.hash.slice(1) : "dashboard");
 }
 
@@ -103,3 +110,15 @@ $$("[data-go]").forEach((b) => b.addEventListener("click", (e) => { e.preventDef
 $("#scrim").addEventListener("click", closeSheets);
 $$("[data-close]").forEach((b) => b.addEventListener("click", closeSheets));
 document.addEventListener("keydown", (e) => e.key === "Escape" && closeSheets());
+
+// ---- أمان الجلسة: خروج تلقائي بعد 30 دقيقة بدون نشاط ----
+const IDLE_MS = 30 * 60 * 1000;
+let idleTimer;
+function watchIdle() {
+  const reset = () => {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(async () => { await signOut(auth); toast("تم تسجيل الخروج تلقائياً لعدم النشاط", "info"); }, IDLE_MS);
+  };
+  ["pointerdown", "keydown", "scroll", "touchstart"].forEach((ev) => window.addEventListener(ev, reset, { passive: true }));
+  reset();
+}

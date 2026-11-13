@@ -40,7 +40,7 @@ function render() {
     : `<div class="empty"><i class="fas fa-droplet"></i><p>لا توجد منتجات${term ? " مطابقة" : " بعد — أضف أول عطر"}</p></div>`;
 }
 
-async function uploadImage(file) {
+export async function uploadImage(file) {
   const fd = new FormData();
   fd.append("image", file);
   const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: "POST", body: fd });

@@ -18,7 +18,7 @@ export const auth = getAuth(app);
 export const $ = (s, r = document) => r.querySelector(s);
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 export const bus = new EventTarget();
-export const store = { orders: [], products: [] };
+export const store = { orders: [], products: [], sections: [] };
 
 export const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]);
