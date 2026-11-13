@@ -4,12 +4,12 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
 
 // 2. بيانات مشروع سراب (نفس بياناتك)
 const firebaseConfig = {
-  apiKey: "AIzaSyD46OEVC7BJZPihUmeWSlMmMjmMoXorn1o",
-  authDomain: "sarab-store.firebaseapp.com",
-  projectId: "sarab-store",
-  storageBucket: "sarab-store.firebasestorage.app",
-  messagingSenderId: "629583443040",
-  appId: "1:629583443040:web:150fcc4d517fc8f82fbf05"
+  apiKey: "AIzaSyAi3ae1vCSip7C7VTBOSdyyTDMbhD_pZuw",
+  authDomain: "sarab-3tor.firebaseapp.com",
+  projectId: "sarab-3tor",
+  storageBucket: "sarab-3tor.firebasestorage.app",
+  messagingSenderId: "132817463996",
+  appId: "1:132817463996:web:6d63c584d1342b2598feb9"
 };
 
 // 3. تشغيل Firebase

@@ -6,7 +6,7 @@
 ## 2) النشر على Firebase Hosting
     npm install -g firebase-tools
     firebase login
-    firebase use sarab-store
+    firebase use sarab-3tor
     firebase deploy --only hosting
 
 ## 3) إعداد الأدمن (قبل نشر القواعد)
