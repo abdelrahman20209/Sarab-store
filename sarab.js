@@ -187,7 +187,7 @@ function updateTrackingUI(data) {
   const steps = ["step-pending", "step-processing", "step-shipped", "step-delivered"];
   steps.forEach((step) => document.getElementById(step)?.classList.remove("active"));
 
-  const statusMap = { pending: 0, processing: 1, shipped: 2, delivered: 3 };
+  const statusMap = { pending: 0, pending_payment: 0, processing: 1, paid: 1, shipped: 2, on_the_way: 2, delivered: 3 };
   const currentIdx = statusMap[data.status] ?? -1;
   steps.forEach((stepId, idx) => {
     if (idx <= currentIdx) document.getElementById(stepId)?.classList.add("active");
