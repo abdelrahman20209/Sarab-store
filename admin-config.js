@@ -4,9 +4,7 @@
 //  ضع هنا الإيميلات المسموح لها بدخول لوحة التحكم (نفس إيميل حسابك في Firebase).
 //  أي حساب غير موجود هنا لن يستطيع فتح اللوحة.
 //  بديل: أنشئ document في Firestore باسم  admins/{uid}  لكل مدير.
-export const ADMIN_EMAILS = [
-  // "owner@example.com",
-];
+export const ADMIN_EMAILS = ["qovox222@gmail.com"];
 
 // مفتاح رفع الصور (ImgBB)
 export const IMGBB_API_KEY = "96af28066f391086bdad4447630083a2";
