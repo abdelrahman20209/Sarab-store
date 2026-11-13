@@ -45,10 +45,22 @@ onAuthStateChanged(auth, (user) => {
     sidebarFooter.innerHTML = "";
   }
 
+  const accountBtn = document.getElementById("accountBtn");
+  if (accountBtn) {
+    accountBtn.href = user ? "#" : "login/login.html";
+    accountBtn.onclick = user
+      ? (e) => {
+          e.preventDefault();
+          document.getElementById("profilePanel").classList.add("active");
+          document.getElementById("panelOverlay").classList.add("active");
+        }
+      : null;
+  }
+
   if (user) {
     if (authArea) {
       authArea.innerHTML = `
-                <a href="#" id="myAccountBtn" class="nav-link" style="color: #fff; font-weight: bold; text-decoration: none; font-size: 0.9rem;">
+                <a href="#" id="myAccountBtn" class="nav-link">
                     <i class="far fa-user"></i> حسابي
                 </a>
             `;
@@ -62,7 +74,7 @@ onAuthStateChanged(auth, (user) => {
     if (sidebarFooter) {
       sidebarFooter.style.display = "block";
       sidebarFooter.innerHTML = `
-                <button id="logoutBtnSide" class="logout-link" style="width: 100%; padding: 12px; background: rgba(227, 6, 19, 0.1); color: #ff4d4d; border: 1px solid rgba(227, 6, 19, 0.2); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold;">
+                <button id="logoutBtnSide" class="logout-link">
                     <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
                 </button>
             `;
@@ -75,7 +87,7 @@ onAuthStateChanged(auth, (user) => {
   } else {
     if (authArea) {
       authArea.innerHTML = `
-                <a href="login/login.html" class="nav-link" style="color: #fff; text-decoration: none;">
+                <a href="login/login.html" class="nav-link">
                     <i class="fas fa-sign-in-alt"></i> دخول
                 </a>
             `;
@@ -86,55 +98,55 @@ onAuthStateChanged(auth, (user) => {
 
 /* --- محرك متابعة الطلبات الجديد (مستطيلات + تفاصيل) --- */
 window.showTrackingPage = async (event) => {
-    if (event) event.preventDefault();
-    const user = auth.currentUser;
+  if (event) event.preventDefault();
+  const user = auth.currentUser;
 
-    if (!user) {
-        alert("من فضلك سجل دخولك أولاً لمشاهدة مقتنياتك في سراب ✨");
-        return;
-    }
+  if (!user) {
+    showToast("سجّل دخولك أولاً لمتابعة طلباتك");
+    return;
+  }
 
-    const trackingSection = document.getElementById('order-tracking-section');
-    const productsSection = document.getElementById('products-container')?.parentElement;
-    const offersSection = document.getElementById('offers-container')?.parentElement;
+  const trackingSection = document.getElementById("order-tracking-section");
+  const homeView = document.getElementById("home-view");
+  if (!trackingSection) return;
 
-    if (trackingSection) {
-        trackingSection.style.display = 'block';
-        if (productsSection) productsSection.style.display = 'none';
-        if (offersSection) offersSection.style.display = 'none';
-        trackingSection.scrollIntoView({ behavior: 'smooth' });
+  trackingSection.style.display = "block";
+  if (homeView) homeView.style.display = "none";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-        // جلب الطلبات الخاصة بالمستخدم وعرضها كمستطيلات
-        const ordersList = document.getElementById('orders-list');
-        if (ordersList) {
-            ordersList.innerHTML = '<p style="color: #555; text-align: center;">جاري جلب طلباتك الفاخرة...</p>';
-            
-            const q = query(collection(db, "orders"), where("userId", "==", user.uid));
-            const querySnapshot = await getDocs(q);
-            
-            ordersList.innerHTML = "";
-            if (querySnapshot.empty) {
-                ordersList.innerHTML = '<p style="color: #fff; text-align: center;">لا توجد طلبات سابقة لك في سراب.</p>';
-                return;
-            }
+  const ordersList = document.getElementById("orders-list");
+  if (!ordersList) return;
+  ordersList.innerHTML = '<p style="color: var(--muted); text-align: center;">جاري جلب طلباتك...</p>';
 
-            querySnapshot.forEach((docSnap) => {
-                const order = docSnap.data();
-                const id = docSnap.id;
-                const rectHTML = `
-                    <div class="order-rect" onclick="viewOrderDetails('${id}')" style="cursor: pointer;">
-                        <div class="rect-info">
-                            <span class="rect-id">طلب رقم: #${id.slice(-5)}</span>
-                            <span class="rect-date" style="color: #555; font-size: 0.8rem;">${order.date || 'جاري المعالجة'}</span>
-                        </div>
-                        <div class="rect-status-badge ${order.status}" style="font-size: 0.7rem;">${order.status || 'pending'}</div>
-                        <i class="fas fa-chevron-left" style="color: #e30613;"></i>
-                    </div>
-                `;
-                ordersList.innerHTML += rectHTML;
-            });
-        }
-    }
+  const q = query(collection(db, "orders"), where("userId", "==", user.uid));
+  const querySnapshot = await getDocs(q);
+
+  ordersList.innerHTML = "";
+  if (querySnapshot.empty) {
+    ordersList.innerHTML = '<p style="text-align: center; color: var(--muted);">لا توجد طلبات سابقة لك في سراب.</p>';
+    return;
+  }
+
+  querySnapshot.forEach((docSnap) => {
+    const order = docSnap.data();
+    const id = docSnap.id;
+    ordersList.innerHTML += `
+      <div class="order-rect" onclick="viewOrderDetails('${id}')">
+        <div class="rect-info">
+          <span class="rect-id">طلب رقم: #${id.slice(-5)}</span>
+          <span class="rect-date" style="color: var(--muted); font-size: 0.8rem;">${order.date || "جاري المعالجة"}</span>
+        </div>
+        <div class="rect-status-badge ${order.status}">${order.status || "pending"}</div>
+        <i class="fas fa-chevron-left" style="color: var(--red);"></i>
+      </div>`;
+  });
+};
+
+window.hideTrackingPage = (event) => {
+  if (event) event.preventDefault();
+  document.getElementById("order-tracking-section").style.display = "none";
+  document.getElementById("home-view").style.display = "";
+  window.scrollTo({ top: 0 });
 };
 
 window.viewOrderDetails = (orderId) => {
@@ -189,51 +201,81 @@ function getGenderIcon(gender) {
   return '<div class="gender-icon-container"><i class="fas fa-venus-mars icon-unisex"></i></div>';
 }
 
-async function loadSarabProducts() {
+let allProducts = [];
+let activeFilter = "all";
+
+function productCardHTML(id, p, i) {
+  const finalPrice = p.hasDiscount ? p.price - p.price * (p.discountPercentage / 100) : p.price;
+  const name = String(p.name || "").replace(/'/g, "\\'");
+  const image = String(p.image || "img/placeholder.jpg").replace(/'/g, "\\'");
+  return `
+    <div class="product-card" data-name="${(p.name || "").toLowerCase()}" data-gender="${p.gender || "unisex"}" style="animation-delay:${Math.min(i, 8) * 70}ms">
+      ${p.hasDiscount ? `<div class="discount-badge">خصم ${p.discountPercentage}%</div>` : ""}
+      <div class="product-image" onclick="showProductDetails('${id}')">
+        <img src="${p.image || "img/placeholder.jpg"}" alt="${p.name}" loading="lazy">
+        ${getGenderIcon(p.gender)}
+      </div>
+      <div class="product-info">
+        <h3 onclick="showProductDetails('${id}')">${p.name}</h3>
+        <div class="price-area">
+          <span class="current-price">${finalPrice.toFixed(0)} ج.م</span>
+          ${p.hasDiscount ? `<span class="old-price">${p.price.toFixed(0)} ج.م</span>` : ""}
+        </div>
+        <p class="stock-info ${p.inStock ? "in" : "out"}">${p.inStock ? "متوفر حالياً" : "نفذت الكمية"}</p>
+        <div class="card-btns">
+          <button class="add-to-cart-btn" ${!p.inStock ? "disabled" : ""} onclick="addToSarabCart('${id}', '${name}', ${finalPrice}, '${image}')">${p.inStock ? "إضافة للسلة" : "نفذت"}</button>
+          <button class="view-details-btn" aria-label="تفاصيل" onclick="showProductDetails('${id}')"><i class="fas fa-eye"></i></button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderProducts() {
   const productsContainer = document.getElementById("products-container");
   const offersContainer = document.getElementById("offers-container");
+  const term = (document.getElementById("search-input")?.value || "").trim().toLowerCase();
+  const match = (p) =>
+    (activeFilter === "all" || (p.gender || "unisex") === activeFilter) &&
+    (!term || (p.name || "").toLowerCase().includes(term));
+
+  const store = allProducts.filter(({ p }) => p.showInStore && match(p));
+  const offers = allProducts.filter(({ p }) => p.showInOffers && match(p));
+
+  productsContainer.innerHTML = store.map(({ id, p }, i) => productCardHTML(id, p, i)).join("");
+  if (offersContainer) {
+    offersContainer.innerHTML = offers.length
+      ? offers.map(({ id, p }, i) => productCardHTML(id, p, i)).join("")
+      : `<div class="no-offers-msg">لا توجد عروض حصرية حالياً..</div>`;
+  }
+  if (!store.length && !allProducts.length) {
+    productsContainer.innerHTML = "<p class='empty-msg'>المجموعة فارغة حالياً..</p>";
+  }
+  const noRes = document.getElementById("no-results-message");
+  if (noRes) noRes.style.display = allProducts.length && !store.length ? "block" : "none";
+}
+
+async function loadSarabProducts() {
+  const productsContainer = document.getElementById("products-container");
   if (!productsContainer) return;
   try {
     const querySnapshot = await getDocs(collection(db, "products"));
-    productsContainer.innerHTML = "";
-    if (offersContainer) offersContainer.innerHTML = "";
-    if (querySnapshot.empty) {
-      productsContainer.innerHTML = "<p class='empty-msg'>المجموعة فارغة حالياً.. </p>";
-      return;
-    }
-    let hasOffers = false;
-    querySnapshot.forEach((docSnap) => {
-      const p = docSnap.data();
-      const id = docSnap.id;
-      const finalPrice = p.hasDiscount ? p.price - p.price * (p.discountPercentage / 100) : p.price;
-      const productHTML = `
-                <div class="product-card">
-                    ${p.hasDiscount ? `<div class="discount-badge">خصم ${p.discountPercentage}%</div>` : ""}
-                    <div class="product-image" onclick="showProductDetails('${id}')" style="cursor: pointer; position: relative;">
-                        <img src="${p.image || "img/placeholder.jpg"}" alt="${p.name}" loading="lazy">
-                        ${getGenderIcon(p.gender)}
-                    </div>
-                    <div class="product-info">
-                        <h3 onclick="showProductDetails('${id}')" style="cursor: pointer;">${p.name}</h3>
-                        <div class="price-area">
-                            <span class="current-price">${finalPrice.toFixed(0)} ج.م</span>
-                            ${p.hasDiscount ? `<span class="old-price">${p.price.toFixed(0)} ج.م</span>` : ""}
-                        </div>
-                        <p class="stock-info" style="color: ${p.inStock ? "#25d366" : "#e30613"}; font-size: 0.8rem; margin: 5px 0;">
-                            ${p.inStock ? "متوفر حالياً ✅" : "❌ نفذت الكمية"}
-                        </p>
-                        <div class="card-btns" style="display: flex; gap: 5px; margin-top: 10px;">
-                            <button class="add-to-cart-btn" ${!p.inStock ? 'disabled style="background: #333; flex: 4;"' : 'style="flex: 4;"'} onclick="addToSarabCart('${id}', '${p.name}', ${finalPrice}, '${p.image}')">${p.inStock ? "إضافة للسلة" : "نفذت"}</button>
-                            <button class="view-details-btn" onclick="showProductDetails('${id}')" style="flex: 1; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 5px; cursor: pointer;"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-                </div>`;
-      if (p.showInStore) productsContainer.innerHTML += productHTML;
-      if (p.showInOffers && offersContainer) { offersContainer.innerHTML += productHTML; hasOffers = true; }
-    });
-    if (!hasOffers && offersContainer) offersContainer.innerHTML = `<div class="no-offers-msg">لا توجد عروض حصرية حالياً..</div>`;
-  } catch (error) { console.error("❌ فشل جلب المنتجات:", error); }
+    allProducts = querySnapshot.docs.map((d) => ({ id: d.id, p: d.data() }));
+    renderProducts();
+  } catch (error) {
+    console.error("❌ فشل جلب المنتجات:", error);
+    productsContainer.innerHTML = "<p class='empty-msg'>تعذّر تحميل العطور، حاول مرة أخرى.</p>";
+  }
 }
+
+window.searchSarabProducts = () => renderProducts();
+
+document.getElementById("categoryChips")?.addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip");
+  if (!chip) return;
+  document.querySelectorAll("#categoryChips .chip").forEach((c) => c.classList.toggle("active", c === chip));
+  activeFilter = chip.dataset.filter;
+  renderProducts();
+});
 
 window.showProductDetails = async (id) => {
   const modal = document.getElementById("productDetailsModal");
@@ -249,7 +291,8 @@ window.showProductDetails = async (id) => {
       document.getElementById("modalProductSize").innerText = p.size || "100";
       document.getElementById("modalProductPrice").innerText = finalPrice.toFixed(0);
       const iconContainer = document.getElementById("modalGenderIcon");
-      if (p.gender === "men") iconContainer.innerHTML = '<i class="fas fa-mars icon-men"></i>';
+      if (!iconContainer) {}
+      else if (p.gender === "men") iconContainer.innerHTML = '<i class="fas fa-mars icon-men"></i>';
       else if (p.gender === "women") iconContainer.innerHTML = '<i class="fas fa-venus icon-women"></i>';
       else iconContainer.innerHTML = '<i class="fas fa-venus-mars icon-unisex"></i>';
       const modalAddBtn = document.getElementById("modalAddToCartBtn");
@@ -277,7 +320,7 @@ window.addToSarabCart = async (id, name, price, image) => {
       if (existingIndex > -1) items[existingIndex].quantity += 1;
       else items.push({ id, name, price, image, quantity: 1 });
       await setDoc(cartRef, { items }, { merge: true });
-      showToast(`تمت إضافة ${name} للسله! 🚀`);
+      showToast(`تمت إضافة ${name} للسلة`);
       updateCartBadge(user.uid);
     } catch (error) { console.error(error); }
   } else {
@@ -286,12 +329,20 @@ window.addToSarabCart = async (id, name, price, image) => {
     if (existingIndex > -1) guestCart[existingIndex].quantity += 1;
     else guestCart.push({ id, name, price, image, quantity: 1 });
     localStorage.setItem("sarab_guest_cart", JSON.stringify(guestCart));
-    showToast(`تمت إضافة ${name} كزائر ✨`);
+    showToast(`تمت إضافة ${name} للسلة`);
     updateCartBadge(null);
   }
 };
 
-function showToast(msg) { alert(msg); }
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  if (!t) return alert(msg);
+  document.getElementById("toastText").textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
 
 async function updateCartBadge(uid) {
   const counter = document.getElementById("cartCount");

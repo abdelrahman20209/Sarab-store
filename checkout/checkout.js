@@ -46,7 +46,7 @@ async function loadReceipt() {
     const shippingInfo = JSON.parse(localStorage.getItem('temp_shipping_info'));
     if (!shippingInfo) {
         alert("بيانات الشحن مفقودة! سيتم إعادتك لتأكيد البيانات.");
-        window.location.href = "car.html";
+        window.location.href = "../car/car.html";
         return;
     }
 
