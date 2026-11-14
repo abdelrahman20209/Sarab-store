@@ -1,19 +1,37 @@
-# رفع وتشغيل موقع سراب
+# نشر وتشغيل موقع سراب
 
-## 1) الرفع على GitHub
-    git push -u origin claude/dora-project-72a7uu
+- الموقع ولوحة الأدمن: https://sarab-3tor.web.app  (الأدمن: `/admin.html`)
+- قاعدة البيانات وتسجيل الدخول: Firebase مشروع `sarab-3tor`
+- سيرفر الإيميلات (كود التفعيل OTP + الرسائل الترويجية): Cloudflare Worker `sarab-api`
 
-## 2) النشر على Firebase Hosting
-    npm install -g firebase-tools
-    firebase login
-    firebase use sarab-3tor
-    firebase deploy --only hosting
+## أوامر النشر (من فولدر المشروع)
 
-## 3) إعداد الأدمن (قبل نشر القواعد)
-1. افتح الموقع /admin.html وسجّل دخول بحسابك. لو ظهرت "الدخول غير مصرّح" انسخ الـ UID.
-2. في Firebase Console > Firestore > أنشئ collection باسم `admins` و document ID = الـ UID (أي حقل داخله، مثلاً role = admin).
-3. ضع إيميلك أيضاً في admin-config.js داخل ADMIN_EMAILS.
+| الأمر | بيعمل إيه |
+|---|---|
+| `deploy.bat` | يبني `dist` وينشر الموقع على `sarab-3tor.web.app` |
+| `deploy.bat rules` | ينشر قواعد Firestore |
+| `deploy.bat api` | ينشر سيرفر الإيميلات |
+| `deploy.bat key` | يحفظ مفتاح Brevo على السيرفر (بتلصقه في النافذة) |
+| `deploy.bat all` | الموقع + القواعد + السيرفر |
+| `deploy.bat build` | يبني `dist` فقط بدون نشر |
 
-## 4) نشر قواعد Firestore (بعد تجربة الأدمن)
-راجع firestore.rules ثم:
-    firebase deploy --only firestore:rules
+أول مرة فقط: `npx firebase-tools@latest login` و `npx wrangler login`.
+
+## إعداد أول مرة
+
+1. `deploy.bat key` والصق مفتاح Brevo (المفتاح لا يُكتب في أي ملف).
+2. في Brevo: فعّل إيميل مُرسِل (Senders) — السيرفر يستخدم أول مُرسِل مفعّل.
+3. `deploy.bat all`
+4. من لوحة الأدمن: أضف مناطق الشحن، وسائل التحويل، الأقسام، والمنتجات.
+
+## الأدمن
+
+حساب الأدمن = حساب في Firebase Authentication له مستند `admins/{UID}` في Firestore.
+`create-admin.bat` ينشئ الحساب ويطبع الـ UID.
+
+## مكان كل حاجة
+
+- `js/config.js` — إعدادات Firebase ورابط سيرفر الإيميلات (مكان واحد لكل الصفحات).
+- `site-schema.js` — كل النصوص والصور القابلة للتعديل من الأدمن + نص الشروط الافتراضي.
+- `js/layout.js` — الهيدر والفوتر (نسخة واحدة لكل الصفحات).
+- `worker/` — سيرفر الإيميلات.

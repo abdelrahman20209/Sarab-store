@@ -4,400 +4,110 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#050505" />
-    <link rel="icon" type="image/png" href="img/LOGO.png" />
-    <link rel="apple-touch-icon" href="img/LOGO.png" />
     <title>سراب | Sarab — عطور فاخرة</title>
-    <meta
-      name="description"
-      content="سراب للعطور - تجربة عطرية فريدة تمزج بين الأصالة العربية والحداثة."
-    />
-    <meta property="og:title" content="سراب | Sarab" />
-    <meta property="og:description" content="سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر." />
-    <meta property="og:image" content="img/LOGO.png" />
-
+    <meta name="description" content="سراب — عطور فاخرة. اطلب بسهولة: ادفع مقدّماً بسيطاً بالتحويل واستلم طلبك وادفع الباقي للمندوب." />
+    <link rel="icon" type="image/png" href="img/LOGO.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Reem+Kufi:wght@500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <link rel="stylesheet" href="luxe.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="css/store.css" />
   </head>
   <body>
-    <div class="announce red" id="announce">
-      <div class="announce-in">
-        <span class="ann-track"><span id="annText">للطلب والاستفسار تواصل معنا مباشرة عبر واتساب</span></span>
-        <a id="annLink" href="#" hidden></a>
-        <span id="annTimer" class="ann-timer" hidden></span>
-      </div>
-      <button id="annClose" class="ann-x" aria-label="إغلاق"><i class="fas fa-xmark"></i></button>
-    </div>
-
-    <!-- ===== Header ===== -->
-    <header class="site-header" id="siteHeader">
-      <div class="wrap nav">
-        <div class="nav-start">
-          <button class="icon-btn" id="menuOpen" aria-label="القائمة"><i class="fas fa-bars-staggered"></i></button>
-          <ul class="nav-links">
-            <li><a href="index.html" id="store-nav-link" data-cms="nav_store">المتجر</a></li>
-            <li><a href="#special-offers-anchor" data-cms="nav_offers">العروض</a></li>
-            <li><a href="#" id="tracking-nav-link" onclick="window.showTrackingPage(event)" data-cms="nav_orders">متابعة الطلبات</a></li>
-          </ul>
-        </div>
-
-        <a class="brand" href="index.html" aria-label="Sarab"><img src="img/sarasb.jpg" alt="Sarab" /></a>
-
-        <div class="nav-end">
-          <div id="auth-area"></div>
-          <button class="icon-btn" id="searchToggle" aria-label="بحث"><i class="fas fa-magnifying-glass"></i></button>
-          <a class="icon-btn" id="accountBtn" href="login/login.html" aria-label="حسابي"><i class="far fa-user"></i></a>
-          <a class="icon-btn" href="car/car.html" aria-label="السلة">
-            <i class="fas fa-bag-shopping"></i>
-            <span class="badge" id="cartCount">0</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="search-bar" id="searchBar">
-        <div class="field">
-          <i class="fas fa-magnifying-glass"></i>
-          <input type="search" id="search-input" placeholder="ابحث عن عطرك..." data-cms-ph="search_placeholder" oninput="window.searchSarabProducts()" />
-        </div>
-      </div>
-    </header>
-
-    <!-- ===== Sidebar ===== -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <img src="img/sarasb.jpg" alt="Sarab" />
-        <button id="menuClose" aria-label="إغلاق"><i class="fas fa-xmark"></i></button>
-      </div>
-      <div class="sidebar-content">
-        <h3 data-cms="side_title">التصنيفات</h3>
-        <ul class="side-links">
-          <li><a href="#home-view"><i class="fas fa-house"></i>الرئيسية</a></li>
-          <li><a href="#regular-products"><i class="fas fa-droplet"></i>المجموعة الأساسية</a></li>
-          <li><a href="#special-offers-anchor" id="sideOffersLink"><i class="fas fa-tags"></i>العروض الخاصة</a></li>
-          <li><a href="#" onclick="window.showTrackingPage(event)"><i class="fas fa-box-open"></i>متابعة الطلبات</a></li>
-          <li><a href="car/car.html"><i class="fas fa-bag-shopping"></i>سلة المشتريات</a></li>
-        </ul>
-
-        <div class="sidebar-support">
-          <h4 data-cms="side_help_title">هل تحتاج مساعدة؟</h4>
-          <p data-cms="side_help_text">نحن هنا لمساعدتك في أي استفسار عطري أو تقني.</p>
-          <div class="support-actions">
-            <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color: #25d366"></i><span>واتساب الدعم</span></a>
-            <a href="mailto:support@sarab.com" data-social="email"><i class="far fa-envelope" style="color: var(--red)"></i><span>البريد الإلكتروني</span></a>
+    <main>
+      <!-- الواجهة -->
+      <section class="hero">
+        <div class="wrap hero-in">
+          <div>
+            <div class="kicker" data-t="hero_eyebrow"></div>
+            <h1><span data-t="hero_title_a"></span> <em data-t="hero_title_em"></em><br /><span data-t="hero_title_b"></span></h1>
+            <p class="lead" data-t="hero_lead"></p>
+            <div class="hero-btns">
+              <a class="btn primary" href="#shop"><span data-t="hero_btn1"></span> <i class="fas fa-arrow-left"></i></a>
+              <a class="btn ghost" href="#how" data-t="hero_btn2"></a>
+            </div>
+            <ul class="points">
+              <li><i class="fas fa-truck-fast"></i> <span data-t="hero_point1"></span></li>
+              <li><i class="fas fa-hand-holding-dollar"></i> <span data-t="hero_point2"></span></li>
+              <li><i class="fab fa-whatsapp"></i> <span data-t="hero_point3"></span></li>
+            </ul>
+          </div>
+          <div class="arches" aria-hidden="true">
+            <figure><img data-img="hero_img3" src="img/WhatsApp%20Image%202026-04-05%20at%207.16.15%20PM.jpeg" alt="" /></figure>
+            <figure><img data-img="hero_img1" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.17%20PM.jpeg" alt="" /></figure>
+            <figure><img data-img="hero_img2" src="img/WhatsApp%20Image%202026-04-05%20at%207.18.11%20PM.jpeg" alt="" /></figure>
           </div>
         </div>
-      </div>
-      <div class="sidebar-footer" id="sidebarFooter"></div>
-    </aside>
-    <div class="overlay" id="overlay"></div>
+      </section>
 
-    <main id="page-content">
-      <div id="home-view">
-        <!-- ===== Hero ===== -->
-        <section class="hero">
-          <div class="wrap hero-grid">
-            <div class="hero-copy">
-              <span class="eyebrow" data-cms="hero_eyebrow">Sarab Perfumes</span>
-              <h1><span data-cms="hero_title_a">عطرٌ يترك</span> <em data-cms="hero_title_em">أثراً</em><br /><span data-cms="hero_title_b">لا يُنسى</span></h1>
-              <p class="lead" data-cms="hero_lead">سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر. اكتشف تشكيلة عطور اختيرت بعناية لتليق بحضورك.</p>
-              <div class="hero-cta">
-                <a href="#regular-products" class="btn btn-red"><span data-cms="hero_btn1">تسوّق المجموعة</span> <i class="fas fa-arrow-left"></i></a>
-                <a href="#special-offers-anchor" class="btn btn-ghost" data-cms="hero_btn2">العروض الحصرية</a>
-              </div>
-            </div>
-
-            <div class="hero-visual" aria-hidden="true">
-              <div class="hero-ring"></div>
-              <div class="arch a3"><img data-cms-img="hero_img3" src="img/WhatsApp%20Image%202026-04-05%20at%207.16.15%20PM.jpeg" alt="" /></div>
-              <div class="arch a2"><img data-cms-img="hero_img2" src="img/WhatsApp%20Image%202026-04-05%20at%207.18.11%20PM.jpeg" alt="" /></div>
-              <div class="arch a1"><img data-cms-img="hero_img1" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.17%20PM.jpeg" alt="" /></div>
-            </div>
-          </div>
-          <div class="scroll-hint">SCROLL</div>
-        </section>
-
-        <!-- ===== Marquee ===== -->
-        <div class="marquee" aria-hidden="true">
-          <div class="marquee-track" id="marqueeTrack">
-            <span data-cms="marquee_1">سراب</span><span data-cms="marquee_2">SARAB</span><span data-cms="marquee_3">فخامة الشرق</span><span data-cms="marquee_4">عطور تدوم</span>
-          </div>
-        </div>
-
-        <!-- ===== Shop by category ===== -->
-        <section class="section cats" id="cats">
-          <div class="wrap">
-            <div class="section-head reveal">
-              <div class="kicker" data-cms="cat_kicker">Shop By</div>
-              <h2><span data-cms="cat_title">تسوّق</span> <span class="em" data-cms="cat_title_em">حسب الفئة</span></h2>
-              <div class="rule"></div>
-            </div>
-            <div class="cat-grid">
-              <a href="#regular-products" class="cat-tile reveal" data-filter-go="men"><img data-cms-img="cat1_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.17%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat1_title">رجالي</span></a>
-              <a href="#regular-products" class="cat-tile reveal" data-filter-go="women"><img data-cms-img="cat2_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.16.15%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat2_title">حريمي</span></a>
-              <a href="#regular-products" class="cat-tile reveal" data-filter-go="unisex"><img data-cms-img="cat3_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.18.11%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat3_title">للجنسين</span></a>
-              <a href="#special-offers-anchor" class="cat-tile reveal"><img data-cms-img="cat4_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.45%20PM.jpeg" alt="" loading="lazy" /><span data-cms="cat4_title">العروض</span></a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== Sections managed from the admin panel ===== -->
-        <div id="custom-sections"></div>
-
-        <!-- ===== Collection ===== -->
-        <section class="section" id="regular-products">
-          <div class="wrap">
-            <div class="section-head reveal">
-              <div class="kicker" data-cms="col_kicker">The Collection</div>
-              <h2><span data-cms="col_title">المجموعة</span> <span class="em" data-cms="col_title_em">الأساسية</span></h2>
-              <div class="rule"></div>
-            </div>
-
-            <div class="chips reveal" id="categoryChips">
-              <button class="chip active" data-filter="all" data-cms="chip_all">الكل</button>
-              <button class="chip" data-filter="men" data-cms="chip_men">رجالي</button>
-              <button class="chip" data-filter="women" data-cms="chip_women">حريمي</button>
-              <button class="chip" data-filter="unisex" data-cms="chip_unisex">للجنسين</button>
-            </div>
-
-            <div id="products-container" class="perfumes-grid">
-              <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-            </div>
-
-            <div id="no-results-message" class="no-search-results">
-              <i class="fas fa-magnifying-glass-minus"></i>
-              <h3>لم نجد ما تبحث عنه</h3>
-              <p>لا يوجد عطر مطابق لبحثك. تواصل معنا وسنساعدك في إيجاد العطر المناسب.</p>
-              <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener" class="btn-support"><i class="fab fa-whatsapp"></i><span>تواصل مع الدعم</span></a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== Story ===== -->
-        <section class="story">
-          <div class="wrap">
-            <div class="story-card reveal">
-              <img src="img/LOGO.png" alt="Sarab" />
-              <h2 data-cms="story_title">حكاية سراب</h2>
-              <p data-cms="story_text">من سحر الشرق وأصالة العطور العربية وُلد سراب. نختار لك كل عطر ليحمل أثراً يبقى في الذاكرة، بتغليف أنيق وتجربة شراء بسيطة من أول نظرة حتى باب بيتك.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== Offers ===== -->
-        <div id="special-offers-anchor"></div>
-        <section class="offers special-offers-section">
-          <div class="wrap">
-            <div class="section-head reveal">
-              <div class="kicker" data-cms="off_kicker">Exclusive</div>
-              <h2><span data-cms="off_title">عروض</span> <span class="em" data-cms="off_title_em">حصرية</span></h2>
-              <div class="rule"></div>
-            </div>
-            <div id="offers-container" class="perfumes-grid"></div>
-          </div>
-        </section>
-
-        <!-- ===== Values ===== -->
-        <section class="wrap">
-          <div class="values">
-            <div class="value reveal"><i class="fas fa-gem"></i><div><h4 data-cms="val1_title">تشكيلة مختارة</h4><p data-cms="val1_text">عطور منتقاة بعناية لتناسب كل ذوق ومناسبة.</p></div></div>
-            <div class="value reveal"><i class="fas fa-gift"></i><div><h4 data-cms="val2_title">تغليف فاخر</h4><p data-cms="val2_text">كل عطر يصلك في تغليف يليق بالهدية.</p></div></div>
-            <div class="value reveal"><i class="fab fa-whatsapp"></i><div><h4 data-cms="val3_title">دعم مباشر</h4><p data-cms="val3_text">فريقنا جاهز للرد على استفساراتك عبر واتساب.</p></div></div>
-          </div>
-        </section>
-
-        <!-- ===== CTA ===== -->
-        <section class="cta">
-          <div class="wrap">
-            <div class="cta-box reveal">
-              <h2 data-cms="cta_title">جاهز لتجد عطرك؟</h2>
-              <p data-cms="cta_text">تصفح المجموعة الكاملة أو اسأل فريقنا ليرشحك للأنسب.</p>
-              <a href="https://wa.me/201148906594" target="_blank" rel="noopener" class="btn btn-wa" data-wa><i class="fab fa-whatsapp"></i> <span data-cms="cta_btn">اطلب عبر واتساب</span></a>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- ===== Orders tracking ===== -->
-      <section id="order-tracking-section">
+      <!-- خطوات الطلب -->
+      <section class="sec how" id="how">
         <div class="wrap">
-          <a href="#" class="back-home" onclick="window.hideTrackingPage(event)"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
-          <div class="section-head">
-            <div class="kicker">My Orders</div>
-            <h2>متابعة <span>الطلبات</span></h2>
-            <div class="rule"></div>
+          <div class="sec-head center"><div class="kicker" data-t="how_kicker"></div><h2 data-t="how_title"></h2></div>
+          <ol class="steps">
+            <li class="step"><div><h3 data-t="how1_t"></h3><p data-t="how1_d"></p></div></li>
+            <li class="step"><div><h3 data-t="how2_t"></h3><p data-t="how2_d"></p></div></li>
+            <li class="step"><div><h3 data-t="how3_t"></h3><p data-t="how3_d"></p></div></li>
+            <li class="step"><div><h3 data-t="how4_t"></h3><p data-t="how4_d"></p></div></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- الأقسام (تتولد تلقائياً من لوحة التحكم) -->
+      <section class="sec" id="sections" hidden>
+        <div class="wrap">
+          <div class="sec-head"><div class="kicker" data-t="cat_kicker"></div><h2 data-t="cat_title"></h2></div>
+          <div class="tiles" id="tiles"></div>
+        </div>
+      </section>
+
+      <!-- صفوف الأقسام -->
+      <div id="rails"></div>
+
+      <!-- كل العطور -->
+      <section class="sec" id="shop">
+        <div class="wrap">
+          <div class="sec-head"><div class="kicker" data-t="col_kicker"></div><h2 data-t="col_title"></h2></div>
+          <div class="shop-tools">
+            <div class="search"><i class="fas fa-magnifying-glass"></i><input id="q" type="search" data-ph="search_placeholder" aria-label="بحث" autocomplete="off" /></div>
+            <div class="chips" id="chips" role="tablist"></div>
           </div>
-          <div id="orders-list" class="orders-grid"></div>
+          <div class="grid" id="grid">
+            <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- الحكاية -->
+      <section class="sec">
+        <div class="wrap">
+          <div class="story">
+            <img data-img="story_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.18.11%20PM.jpeg" alt="" loading="lazy" />
+            <div><h2 data-t="story_title"></h2><p data-t="story_text" style="margin-top: 10px"></p></div>
+          </div>
+          <div class="values">
+            <div class="value"><i class="fas fa-gem"></i><h3 data-t="val1_title"></h3><p data-t="val1_text"></p></div>
+            <div class="value"><i class="fas fa-gift"></i><h3 data-t="val2_title"></h3><p data-t="val2_text"></p></div>
+            <div class="value"><i class="fas fa-headset"></i><h3 data-t="val3_title"></h3><p data-t="val3_text"></p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap">
+        <div class="cta">
+          <h2 data-t="cta_title"></h2>
+          <p data-t="cta_text"></p>
+          <a class="btn wa" data-wa target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> <span data-t="cta_btn"></span></a>
         </div>
       </section>
     </main>
 
-    <!-- ===== Order details modal ===== -->
-    <div id="order-details-modal" class="sarab-modal">
-      <div class="modal-content">
-        <span class="close-modal" onclick="window.closeOrderDetails()">&times;</span>
-        <div class="receipt-header">
-          <img src="img/sarasb.jpg" alt="Sarab" class="receipt-logo" />
-          <h2>تفاصيل طلبك</h2>
-          <p id="display-order-id" class="ref-number">#SRB-00000</p>
-        </div>
-        <div class="modal-grid">
-          <div class="status-tracker-box">
-            <div class="stepper">
-              <div class="step" id="step-pending"><div class="circle"><i class="fas fa-check"></i></div><span>تم الطلب</span></div>
-              <div class="step" id="step-processing"><div class="circle"><i class="fas fa-flask"></i></div><span>قيد التعبئة</span></div>
-              <div class="step" id="step-shipped"><div class="circle"><i class="fas fa-truck"></i></div><span>في الطريق</span></div>
-              <div class="step" id="step-delivered"><div class="circle"><i class="fas fa-house"></i></div><span>تم الاستلام</span></div>
-            </div>
-          </div>
-          <div class="info-card">
-            <h3><i class="fas fa-user-tie"></i> بيانات العميل</h3>
-            <p><strong>الاسم:</strong> <span id="display-user-name">---</span></p>
-            <p><strong>العنوان:</strong> <span id="display-user-address">---</span></p>
-            <p><strong>الهاتف:</strong> <span id="display-user-phone">---</span></p>
-            <p><strong>موعد الوصول المتوقع:</strong> <span id="display-arrival-date">---</span></p>
-          </div>
-          <div class="receipt-card">
-            <h3><i class="fas fa-file-invoice-dollar"></i> ملخص العملية</h3>
-            <div class="receipt-row"><span>العطر:</span><span id="tracking-car-model">---</span></div>
-            <div class="receipt-row"><span>الحجم:</span><span id="tracking-car-color">---</span></div>
-            <hr />
-            <div class="receipt-row total"><span>الإجمالي:</span><span id="total-price">0 ج.م</span></div>
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> تحميل الفاتورة</button>
-          <a href="https://wa.me/201148906594" data-wa class="btn-support"><i class="fab fa-whatsapp"></i> مساعدة فورية عبر واتساب</a>
-        </div>
-      </div>
-    </div>
+    <!-- نافذة تفاصيل المنتج -->
+    <section class="sheet" id="productSheet" aria-label="تفاصيل العطر">
+      <button class="sheet-x" data-close aria-label="إغلاق"><i class="fas fa-xmark"></i></button>
+      <div id="pv"></div>
+    </section>
 
-    <!-- ===== Product details modal ===== -->
-    <div id="productDetailsModal" class="sarab-modal">
-      <div class="modal-content">
-        <span class="close-modal" onclick="window.closeProductDetails()">&times;</span>
-        <div class="pd">
-          <div class="pd-media">
-            <img id="modalProductImage" src="" alt="Product" />
-            <div id="modalGenderIcon"></div>
-          </div>
-          <div class="pd-info">
-            <h2 id="modalProductName"></h2>
-            <p class="desc" id="modalProductDescription"></p>
-            <div class="pd-meta"><span><i class="fas fa-flask"></i> الحجم: <span id="modalProductSize"></span> مل</span></div>
-            <div class="pd-price"><span id="modalProductPrice"></span> <small>ج.م</small></div>
-            <button id="modalAddToCartBtn" class="add-to-cart-btn"><i class="fas fa-bag-shopping"></i> إضافة للسلة</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== Profile panel ===== -->
-    <div id="profilePanel" class="profile-slide-panel">
-      <div class="panel-header">
-        <span class="close-panel" id="closeProfile">&times;</span>
-        <h3>حسابي</h3>
-        <i class="fas fa-pen edit-icon" id="editProfileBtn"></i>
-      </div>
-      <div class="panel-content">
-        <div class="info-group"><label>الاسم</label><input type="text" id="displayFullName" readonly /></div>
-        <div class="info-group"><label>الهاتف</label><input type="text" id="displayPhone" readonly /></div>
-        <div class="info-group"><label>العنوان</label><input type="text" id="displayAddress" readonly /></div>
-        <button id="saveProfileBtn">حفظ التعديلات</button>
-      </div>
-    </div>
-    <div id="panelOverlay" class="panel-overlay"></div>
-
-    <!-- ===== Footer ===== -->
-    <footer class="main-footer">
-      <div class="wrap">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <img src="img/sarasb.jpg" alt="Sarab" />
-            <p data-cms="foot_blurb">سراب.. حكاية تمزج بين سحر الشرق وفخامة الحاضر.</p>
-          </div>
-          <div>
-            <h4 data-cms="foot_links_title">روابط سريعة</h4>
-            <ul>
-              <li><a href="#regular-products">جميع العطور</a></li>
-              <li><a href="#special-offers-anchor">العروض الحصرية</a></li>
-              <li><a href="car/car.html">سلة المشتريات</a></li>
-              <li><a href="login/login.html">تسجيل الدخول</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 data-cms="foot_contact_title">تواصل معنا</h4>
-            <div class="social">
-              <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener" title="واتساب"><i class="fab fa-whatsapp"></i></a>
-              <a href="https://www.instagram.com/sarab.global/" data-social="instagram" target="_blank" rel="noopener" title="انستجرام"><i class="fab fa-instagram"></i></a>
-              <a href="https://www.tiktok.com/@sarab.global" data-social="tiktok" target="_blank" rel="noopener" title="تيك توك"><i class="fab fa-tiktok"></i></a>
-              <a href="#" data-social="facebook" target="_blank" rel="noopener" title="فيسبوك" hidden><i class="fab fa-facebook-f"></i></a>
-            </div>
-            <a href="https://wa.me/201148906594" data-wa target="_blank" rel="noopener" style="color: #bdb7ac; font-size: 0.9rem"><i class="fas fa-headset" style="color: var(--red)"></i> <span data-cms="foot_support">الدعم الفني المباشر</span></a>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <span><span data-cms="foot_copy">جميع الحقوق محفوظة</span> &copy; <b>Sarab</b> 2026</span>
-          <span>تم تصميم وتطوير الموقع بواسطة <a href="#">Qovox</a></span>
-        </div>
-      </div>
-    </footer>
-
-    <!-- ===== Mobile bottom nav ===== -->
-    <nav class="bottom-nav" aria-label="التنقل">
-      <a href="#home-view" class="active"><i class="fas fa-house"></i><span data-cms="bn_home">الرئيسية</span></a>
-      <a href="#regular-products"><i class="fas fa-droplet"></i><span data-cms="bn_perfumes">العطور</span></a>
-      <a href="#special-offers-anchor"><i class="fas fa-tags"></i><span data-cms="bn_offers">العروض</span></a>
-      <a href="car/car.html"><i class="fas fa-bag-shopping"></i><span data-cms="bn_cart">السلة</span><span class="badge" id="cartCountMobile">0</span></a>
-    </nav>
-
-    <div class="toast" id="toast"><i class="fas fa-circle-check"></i><span id="toastText"></span></div>
-
-    <script type="module" src="sarab.js"></script>
-    <script type="module" src="auth-status.js"></script>
-    <script>
-      const $ = (id) => document.getElementById(id);
-      const sidebar = $("sidebar"), overlay = $("overlay");
-      const closeAll = () => { sidebar.classList.remove("active"); overlay.classList.remove("active"); document.body.classList.remove("lock"); };
-      $("menuOpen").onclick = () => { sidebar.classList.add("active"); overlay.classList.add("active"); document.body.classList.add("lock"); };
-      $("menuClose").onclick = closeAll;
-      overlay.onclick = closeAll;
-      document.querySelectorAll(".side-links a").forEach((a) => a.addEventListener("click", closeAll));
-
-      // search drawer
-      $("searchToggle").onclick = () => {
-        const bar = $("searchBar");
-        bar.classList.toggle("open");
-        if (bar.classList.contains("open")) setTimeout(() => $("search-input").focus(), 200);
-      };
-
-      // header solidifies on scroll
-      const header = $("siteHeader");
-      const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 30);
-      onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
-
-      // reveal on scroll
-      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
-      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-
-      // keep the mobile cart badge in sync with the header badge
-      const mirror = () => { $("cartCountMobile").textContent = $("cartCount").textContent; };
-      new MutationObserver(mirror).observe($("cartCount"), { childList: true, characterData: true, subtree: true });
-
-      // bottom nav active state
-      const links = [...document.querySelectorAll(".bottom-nav a[href^='#']")];
-      const targets = links.map((a) => document.querySelector(a.getAttribute("href")));
-      const spy = new IntersectionObserver((es) => es.forEach((e) => {
-        if (e.isIntersecting) links.forEach((a, i) => a.classList.toggle("active", targets[i] === e.target));
-      }), { rootMargin: "-45% 0px -50% 0px" });
-      targets.forEach((t) => t && spy.observe(t));
-    </script>
+    <script type="module" src="js/home.js"></script>
   </body>
 </html>

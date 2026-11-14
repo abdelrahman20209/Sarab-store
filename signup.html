@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="robots" content="noindex" />
+    <title>حساب جديد | سراب</title>
+    <link rel="icon" type="image/png" href="img/LOGO.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="css/store.css" />
+  </head>
+  <body data-page="signup">
+    <main class="auth">
+      <div class="auth-side"><img data-img="auth_img" src="img/WhatsApp%20Image%202026-04-05%20at%207.17.17%20PM.jpeg" alt="" /><div><h2 data-t="auth_title"></h2><p data-t="auth_text"></p></div></div>
+      <div class="auth-box">
+        <div id="step1">
+          <h1>حساب جديد</h1>
+          <p class="muted">سجّل مرة واحدة — هنبعت كود تفعيل على بريدك.</p>
+          <form class="form" id="signupForm" style="margin-top: 14px">
+            <label for="name">الاسم بالكامل</label>
+            <input id="name" type="text" autocomplete="name" required placeholder="الاسم ثلاثي" />
+            <label for="phone">رقم الموبايل</label>
+            <input id="phone" type="tel" inputmode="numeric" autocomplete="tel" required dir="ltr" placeholder="01xxxxxxxxx" />
+            <label for="email">البريد الإلكتروني</label>
+            <input id="email" type="email" inputmode="email" autocomplete="username" required dir="ltr" placeholder="name@example.com" />
+            <label for="password">كلمة المرور (8 أحرف على الأقل)</label>
+            <div class="pass"><input id="password" type="password" autocomplete="new-password" required minlength="8" dir="ltr" /><button type="button" data-eye aria-label="إظهار كلمة المرور"><i class="far fa-eye"></i></button></div>
+            <label class="check"><input type="checkbox" id="agree" /><span>أوافق على <a class="link" href="terms.html" target="_blank">الشروط والأحكام</a></span></label>
+            <label class="check"><input type="checkbox" id="marketing" checked /><span>ابعتوا لي العروض والخصومات على بريدي</span></label>
+            <p class="err" id="err" role="alert"></p>
+            <button class="btn primary block" type="submit" id="submitBtn">إرسال كود التفعيل <i class="fas fa-arrow-left"></i></button>
+          </form>
+          <p class="alt">عندك حساب؟ <a class="link" id="toLogin" href="login.html">سجّل دخولك</a></p>
+        </div>
+        <div id="step2" hidden>
+          <h1>أدخل كود التفعيل</h1>
+          <p class="muted">بعتنا كود من 6 أرقام على <b class="ltr" id="otpEmail"></b> — لو مش لاقيه شوف مجلد الـ Spam.</p>
+          <form class="form" id="otpForm" style="margin-top: 14px">
+            <label for="otp">كود التفعيل</label>
+            <input id="otp" class="otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required placeholder="------" />
+            <p class="err" id="otpErr" role="alert"></p>
+            <button class="btn primary block" type="submit" id="otpBtn">تأكيد وإنشاء الحساب</button>
+          </form>
+          <p class="alt"><button type="button" class="link" id="resend" disabled>إعادة إرسال الكود</button> · <button type="button" class="link" id="editEmail">تعديل البيانات</button></p>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="js/auth.js"></script>
+  </body>
+</html>

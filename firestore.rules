@@ -1,40 +1,51 @@
-// اقتراح قواعد Firestore — راجعها قبل النشر من Firebase Console > Firestore > Rules
-// (الحماية الحقيقية للبيانات تكون هنا، وليس في الواجهة فقط)
+// قواعد Firestore لمتجر سراب — الحماية الحقيقية للبيانات هنا وليست في الواجهة.
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
     function isAdmin() {
-      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
-    // المنتجات: الكل يقرأ، المدير فقط يكتب
-    match /products/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
+    // المنتجات والأقسام ومناطق الشحن ومحتوى الموقع: الكل يقرأ، المدير فقط يكتب
+    match /products/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /sections/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /zones/{id}    { allow read: if true; allow write: if isAdmin(); }
+    match /settings/{id} { allow read: if true; allow write: if isAdmin(); }
 
-    // محتوى الموقع وأقسام الصفحة الرئيسية: الكل يقرأ، المدير فقط يكتب
-    match /settings/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-    match /sections/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-
-    // الطلبات: العميل ينشئ ويقرأ طلباته فقط، والمدير يقرأ ويعدّل الكل
+    // الطلبات: العميل ينشئ طلبه (بحالة "بانتظار التحويل" فقط) ويقرأ طلباته، والمدير يقرأ ويعدّل الكل
     match /orders/{id} {
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-      allow read: if isAdmin() || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == 'pending_payment'
+        && request.resource.data.cartItems is list
+        && request.resource.data.cartItems.size() > 0
+        && request.resource.data.cartItems.size() <= 50
+        && request.resource.data.totalPrice is number
+        && request.resource.data.totalPrice > 0
+        && request.resource.data.payNow is number
+        && request.resource.data.payNow >= 0
+        && request.resource.data.zoneId is string
+        && exists(/databases/$(database)/documents/zones/$(request.resource.data.zoneId))
+        && request.resource.data.customerPhone is string
+        && request.resource.data.customerPhone.size() <= 20
+        && request.resource.data.customerName.size() <= 100
+        && request.resource.data.addressDetail.size() <= 600
+        && request.resource.data.notes.size() <= 600;
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
       allow update, delete: if isAdmin();
     }
 
-    // السلة والمستخدمون: صاحب الحساب فقط
-    match /carts/{uid} { allow read, write: if request.auth != null && request.auth.uid == uid; }
-    match /users/{uid} { allow read, write: if request.auth != null && request.auth.uid == uid; allow read: if isAdmin(); }
+    // بيانات العميل: صاحب الحساب فقط، والمدير يقرأ (لإرسال العروض)
+    match /users/{uid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
 
-    // قائمة المديرين: تُنشأ يدوياً من Console فقط
-    match /admins/{uid} { allow read: if request.auth != null && request.auth.uid == uid; allow write: if false; }
+    // سجل الرسائل الترويجية: للمدير فقط
+    match /promos/{id} { allow read, write: if isAdmin(); }
+
+    // قائمة المديرين: تُنشأ يدوياً من Firebase Console فقط
+    match /admins/{uid} { allow read: if signedIn() && request.auth.uid == uid; allow write: if false; }
   }
 }

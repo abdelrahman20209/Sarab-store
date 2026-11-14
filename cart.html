@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#050505" />
+    <title>السلة | سراب</title>
+    <link rel="icon" type="image/png" href="img/LOGO.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="css/store.css" />
+  </head>
+  <body>
+    <main class="page">
+      <div class="wrap">
+        <div class="progress"><span class="on">1 · السلة</span><span>2 · البيانات والفاتورة</span><span>3 · التحويل والتأكيد</span></div>
+        <div class="page-head"><h1>سلة المشتريات</h1></div>
+        <div class="two" id="cartView">
+          <div class="card" id="items"></div>
+          <aside>
+            <div class="card">
+              <h2><i class="fas fa-receipt"></i> ملخص السلة</h2>
+              <div class="inv-row"><span>سعر المنتجات</span><b id="subtotal">0</b></div>
+              <div class="inv-row sub"><span>الشحن والمقدّم</span><span>يتحدد حسب منطقتك في الخطوة التالية</span></div>
+              <a class="btn primary block" id="goCheckout" href="checkout.html" style="margin-top: 14px">إتمام الطلب <i class="fas fa-arrow-left"></i></a>
+              <a class="btn ghost block" href="index.html#shop" style="margin-top: 10px">متابعة التسوق</a>
+              <p class="note"><i class="fas fa-circle-info"></i><span data-t="pay_explain"></span></p>
+            </div>
+          </aside>
+        </div>
+        <div class="card" id="emptyView" hidden>
+          <div class="empty"><i class="fas fa-bag-shopping"></i><p>سلتك فاضية — اختَر عطرك وابدأ طلبك.</p><a class="btn primary" href="index.html#shop">تسوّق الآن</a></div>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="js/cart.js"></script>
+  </body>
+</html>

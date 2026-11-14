@@ -26,7 +26,7 @@ export function orderRow(o, compact = false) {
     <div class="oc-ref"><span class="ref">#${esc(o.ref)}</span><small>${esc(timeAgo(o.createdAt) || fmtDate(o.createdAt))}</small></div>
     <div class="oc-cust"><b>${esc(o.name)}</b><small dir="ltr">${esc(o.phone || "—")}</small></div>
     <div class="oc-items">${count} ${count === 1 ? "عطر" : "عطور"}</div>
-    <div class="oc-total">${money(o.total)}</div>
+    <div class="oc-total">${money(o.total)}${o.hasSplit && o.status !== "delivered" && o.status !== "canceled" ? `<small class="muted" style="display: block; font-size: 0.7rem">${o.status === "pending_payment" || o.status === "pending" ? "تحويل " + money(o.payNow) : "عند الاستلام " + money(o.payOnDelivery)}</small>` : ""}</div>
     <div class="oc-status"><span class="pill ${st.tone}">${esc(st.label)}</span></div>
     <i class="fas fa-chevron-left oc-go"></i>
   </button>`;
@@ -37,7 +37,7 @@ function render() {
   const rows = store.orders.filter((o) => {
     if (filter !== "all" && group(o.status) !== filter) return false;
     if (!term) return true;
-    const hay = `${o.ref} ${o.name} ${o.phone} ${o.address} ${o.items.map((i) => i.name).join(" ")}`.toLowerCase();
+    const hay = `${o.ref} ${o.name} ${o.phone} ${o.altPhone} ${o.zoneName} ${o.address} ${o.email} ${o.items.map((i) => i.name).join(" ")}`.toLowerCase();
     return hay.includes(term);
   });
   list.innerHTML = rows.length
@@ -61,6 +61,7 @@ function openOrder(id) {
   current = o;
   const st = statusOf(o.status);
   const etaDays = (o.eta || "").replace(/\D/g, "");
+  const paidUp = ["paid", "shipped", "on_the_way", "delivered"].includes(o.status);
   $("#orderSheetBody").innerHTML = `
     <div class="sheet-head">
       <div><span class="ref big">#${esc(o.ref)}</span><small>${esc(fmtDate(o.createdAt))}</small></div>
@@ -70,12 +71,19 @@ function openOrder(id) {
     <div class="info-grid">
       <div class="info-box">
         <h4><i class="fas fa-user"></i> العميل</h4>
-        <p><b>${esc(o.name)}</b></p>
-        <p dir="ltr" class="ltr-right">${esc(o.phone || "—")}</p>
-        <p class="muted">${esc(o.address || "لا يوجد عنوان")}</p>
+        <dl class="dl">
+          <dt>الاسم</dt><dd><b>${esc(o.name)}</b></dd>
+          <dt>الموبايل</dt><dd dir="ltr" class="ltr-right">${esc(o.phone || "—")}</dd>
+          ${o.altPhone ? `<dt>رقم بديل</dt><dd dir="ltr" class="ltr-right">${esc(o.altPhone)} <a href="tel:${esc(o.altPhone)}" class="link">اتصال</a></dd>` : ""}
+          ${o.email ? `<dt>الإيميل</dt><dd dir="ltr" class="ltr-right">${esc(o.email)}</dd>` : ""}
+          ${o.zoneName ? `<dt>المنطقة</dt><dd>${esc(o.zoneName)}</dd>` : ""}
+          <dt>العنوان</dt><dd>${esc(o.addressDetail || o.address || "لا يوجد عنوان")}</dd>
+          ${o.notes ? `<dt>ملاحظات</dt><dd class="gold">${esc(o.notes)}</dd>` : ""}
+        </dl>
         <div class="quick">
           ${o.phone ? `<a class="qbtn call" href="tel:${esc(o.phone)}"><i class="fas fa-phone"></i> اتصال</a>
-          <a class="qbtn wa" target="_blank" rel="noopener" href="${waLink(o.phone, `أهلاً ${o.name}، معك ${STORE_NAME} بخصوص طلبك #${o.ref}`)}"><i class="fab fa-whatsapp"></i> واتساب</a>` : ""}
+          <a class="qbtn wa" target="_blank" rel="noopener" href="${waLink(o.phone, `أهلاً ${o.name}، معك ${STORE_NAME} بخصوص طلبك #${o.ref}`)}"><i class="fab fa-whatsapp"></i> واتساب</a>
+          <a class="qbtn wa" target="_blank" rel="noopener" href="${waLink(o.phone, `أهلاً ${o.name} 🌹\nتم تأكيد استلام تحويلك ${money(o.payNow)} لطلبك #${o.ref} من ${STORE_NAME}.\nجاري تجهيز الطلب وشحنه، والمبلغ المطلوب عند الاستلام: ${money(o.payOnDelivery)}.`)}"><i class="fas fa-check-double"></i> رسالة تأكيد التحويل</a>` : ""}
         </div>
       </div>
       <div class="info-box">
@@ -85,7 +93,15 @@ function openOrder(id) {
             <li>${i.image ? `<img src="${esc(i.image)}" alt="">` : `<span class="ph"><i class="fas fa-droplet"></i></span>`}
               <div><b>${esc(i.name)}</b><small>× ${esc(i.quantity || 1)}${i.price ? ` · ${money(i.price)}` : ""}</small></div></li>`).join("") : `<li class="muted">لا توجد تفاصيل</li>`}
         </ul>
-        <div class="sum"><span>الإجمالي</span><b>${money(o.total)}</b></div>
+        ${o.hasSplit ? `
+        <div class="sum"><span>سعر المنتجات</span><b>${money(o.subtotal)}</b></div>
+        <div class="sum"><span>الشحن${o.zoneName ? ` (${esc(o.zoneName)})` : ""}</span><b>${money(o.shipping)}</b></div>` : ""}
+        <div class="sum"><span>إجمالي الطلب</span><b>${money(o.total)}</b></div>
+        ${o.hasSplit ? `
+        <div class="pay-box">
+          <div class="now"><small>${paidUp ? "تم تحويله" : "المطلوب تحويله"}</small><b>${money(o.payNow)}</b><small>شحن ${money(o.shipping)} + مقدّم ${esc(o.depositPct)}%</small></div>
+          <div class="cod ${paidUp ? "done" : ""}"><small>${o.status === "delivered" ? "تم تحصيله من المندوب" : "المطلوب عند الوصول"}</small><b>${money(o.payOnDelivery)}</b><small>${paidUp ? "يحصّله المندوب" : "بعد تأكيد التحويل"}</small></div>
+        </div>` : ""}
       </div>
     </div>
 
@@ -113,7 +129,7 @@ function openOrder(id) {
     btn.disabled = true;
     try {
       await updateDoc(doc(db, "orders", o.id), { status: s, estimatedArrival: eta ? `${eta} أيام` : "لم يحدد" });
-      toast("تم تحديث الطلب");
+      toast(s === "paid" && o.hasSplit ? `تم تأكيد التحويل — المطلوب عند الوصول ${money(o.payOnDelivery)}` : "تم تحديث الطلب");
       closeSheets();
     } catch (err) {
       console.error(err);

@@ -2,3 +2,4 @@ dist/
 .wrangler/
 .firebase/
 node_modules/
+.claude/

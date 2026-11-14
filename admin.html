@@ -60,8 +60,11 @@
           <button data-view="dashboard" class="active"><i class="fas fa-chart-pie"></i> نظرة عامة</button>
           <button data-view="orders"><i class="fas fa-bag-shopping"></i> الطلبات <b class="badge" data-badge="orders" hidden>0</b></button>
           <button data-view="products"><i class="fas fa-droplet"></i> المنتجات</button>
-          <button data-view="sections"><i class="fas fa-layer-group"></i> أقسام الصفحة</button>
+          <button data-view="sections"><i class="fas fa-layer-group"></i> الأقسام</button>
+          <button data-view="zones"><i class="fas fa-map-location-dot"></i> مناطق الشحن</button>
           <button data-view="content"><i class="fas fa-pen-ruler"></i> محتوى الموقع</button>
+          <button data-view="settings"><i class="fas fa-wallet"></i> الدفع والشروط</button>
+          <button data-view="promo"><i class="fas fa-paper-plane"></i> رسالة ترويجية</button>
           <button data-view="customers"><i class="fas fa-users"></i> العملاء</button>
         </nav>
         <div class="side-foot">
@@ -145,11 +148,80 @@
         <!-- ===== أقسام الصفحة ===== -->
         <section id="view-sections" class="view">
           <div class="toolbar">
-            <div class="note"><i class="fas fa-circle-info"></i> كل قسم يظهر في الصفحة الرئيسية كصف منتجات تختارها بنفسك.</div>
+            <div class="note"><i class="fas fa-circle-info"></i> أي قسم تضيفه هنا يظهر تلقائياً في كل الموقع: قائمة الهيدر، «تسوّق حسب القسم»، فلاتر المنتجات، وصف منتجات في الرئيسية.</div>
             <button class="btn primary" data-act="add-section"><i class="fas fa-plus"></i> <span>قسم جديد</span></button>
           </div>
           <p class="muted count">إجمالي الأقسام: <b id="sectionsCount">0</b></p>
           <div id="sectionsList" class="slist"></div>
+        </section>
+
+        <!-- ===== مناطق الشحن ===== -->
+        <section id="view-zones" class="view">
+          <div class="toolbar">
+            <div class="note"><i class="fas fa-circle-info"></i> العميل يختار منطقته من هذه القائمة فقط. لكل منطقة سعر شحن ونسبة مقدّم يحوّلها العميل، والباقي يدفعه للمندوب.</div>
+            <button class="btn primary" data-act="add-zone"><i class="fas fa-plus"></i> <span>منطقة جديدة</span></button>
+          </div>
+          <p class="muted count">إجمالي المناطق: <b id="zonesCount">0</b></p>
+          <div id="zonesList" class="slist"></div>
+        </section>
+
+        <!-- ===== الدفع والشروط ===== -->
+        <section id="view-settings" class="view">
+          <div class="card">
+            <div class="card-head"><h3><i class="fas fa-wallet"></i> وسائل التحويل</h3></div>
+            <p class="muted tiny">تظهر للعميل بعد تأكيد الطلب مع زر «نسخ». رقم واتساب الذي تُرسل له صورة التحويل يُعدَّل من «محتوى الموقع ← الفوتر وبيانات التواصل».</p>
+            <div class="form" id="payMethods"></div>
+            <div class="btn-row">
+              <button type="button" id="addPayMethod" class="btn ghost"><i class="fas fa-plus"></i> إضافة وسيلة</button>
+              <button type="button" id="savePay" class="btn primary"><i class="fas fa-floppy-disk"></i> حفظ</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3><i class="fas fa-scale-balanced"></i> الشروط والأحكام وحقوق النشر</h3><a class="link" href="terms.html" target="_blank" rel="noopener">فتح الصفحة</a></div>
+            <p class="muted tiny">السطر الذي يبدأ بـ <code>## </code> يظهر كعنوان، والسطر الذي يبدأ بـ <code>- </code> يظهر كنقطة.</p>
+            <div class="form"><textarea id="termsText" rows="18"></textarea></div>
+            <div class="btn-row">
+              <button type="button" id="saveTerms" class="btn primary"><i class="fas fa-floppy-disk"></i> حفظ الشروط</button>
+              <button type="button" id="resetTerms" class="btn ghost"><i class="fas fa-rotate-left"></i> النص الافتراضي</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== رسالة ترويجية ===== -->
+        <section id="view-promo" class="view">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-head"><h3><i class="fas fa-paper-plane"></i> رسالة لكل العملاء</h3></div>
+              <p class="muted tiny">تُرسل على إيميل كل عميل مسجّل ووافق على استلام العروض. جرّبها على إيميلك أولاً.</p>
+              <div class="form">
+                <label for="prSubject">عنوان الإيميل (يظهر في صندوق الوارد)</label>
+                <input id="prSubject" type="text" maxlength="150" placeholder="مثال: خصم 20% على كل العطور لمدة 3 أيام" />
+                <label for="prTitle">العنوان داخل الرسالة (اختياري)</label>
+                <input id="prTitle" type="text" maxlength="150" />
+                <label for="prMessage">نص الرسالة</label>
+                <textarea id="prMessage" rows="7" maxlength="5000" placeholder="اكتب العرض هنا... اترك سطراً فارغاً لبدء فقرة جديدة."></textarea>
+                <div class="row2">
+                  <div><label for="prBtnText">نص الزر (اختياري)</label><input id="prBtnText" type="text" maxlength="40" placeholder="تسوّق الآن" /></div>
+                  <div><label for="prBtnUrl">رابط الزر</label><input id="prBtnUrl" type="text" dir="ltr" value="https://sarab-3tor.web.app/" /></div>
+                </div>
+                <div class="btn-row">
+                  <label class="btn ghost" for="prImage" id="prImageLabel"><i class="fas fa-upload"></i> صورة (اختياري)</label>
+                  <input type="file" id="prImage" accept="image/*" hidden />
+                  <button type="button" class="btn ghost" id="prImageRm" hidden><i class="fas fa-trash"></i> حذف الصورة</button>
+                </div>
+                <div class="btn-row">
+                  <button type="button" id="prTest" class="btn ghost"><i class="fas fa-vial"></i> إرسال تجربة لإيميلي</button>
+                  <button type="button" id="prSend" class="btn primary"><i class="fas fa-paper-plane"></i> إرسال لكل العملاء</button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3>معاينة</h3></div>
+              <div id="prPreview" class="promo-preview"></div>
+              <div class="card-head" style="margin-top: 18px"><h3>آخر الرسائل</h3></div>
+              <div id="prHistory"></div>
+            </div>
+          </div>
         </section>
 
         <!-- ===== محتوى الموقع ===== -->
@@ -204,7 +276,10 @@
         <button data-view="orders"><i class="fas fa-bag-shopping"></i><span>الطلبات</span><b class="badge" data-badge="orders" hidden>0</b></button>
         <button data-view="products"><i class="fas fa-droplet"></i><span>المنتجات</span></button>
         <button data-view="sections"><i class="fas fa-layer-group"></i><span>الأقسام</span></button>
+        <button data-view="zones"><i class="fas fa-map-location-dot"></i><span>المناطق</span></button>
         <button data-view="content"><i class="fas fa-pen-ruler"></i><span>المحتوى</span></button>
+        <button data-view="settings"><i class="fas fa-wallet"></i><span>الدفع</span></button>
+        <button data-view="promo"><i class="fas fa-paper-plane"></i><span>ترويج</span></button>
         <button data-view="customers"><i class="fas fa-users"></i><span>العملاء</span></button>
       </nav>
     </div>
@@ -253,6 +328,9 @@
         <label for="prodDescription">وصف العطر والنوتات</label>
         <textarea id="prodDescription" rows="3" placeholder="افتتاحية من الهيل، قلب من الياسمين..."></textarea>
 
+        <label>الأقسام التي يظهر فيها العطر</label>
+        <div class="checks" id="prodSections"></div>
+
         <div class="checks">
           <label class="check"><input type="checkbox" id="showInStore" checked /><span></span> عرض في المتجر</label>
           <label class="check"><input type="checkbox" id="showInOffers" /><span></span> إضافة للعروض الحصرية</label>
@@ -270,11 +348,31 @@
         <input id="secTitle" type="text" required placeholder="مثال: الأكثر مبيعاً" />
         <label for="secSub">عنوان فرعي (اختياري)</label>
         <input id="secSub" type="text" placeholder="مثال: Best Sellers" />
+        <label>صورة القسم (تظهر في «تسوّق حسب القسم»)</label>
+        <label class="upload" for="secImage"><div id="secImgPreview" class="img-preview"><i class="fas fa-camera"></i><span>اضغط لاختيار صورة</span></div></label>
+        <input type="file" id="secImage" accept="image/*" hidden />
         <label class="check inline"><input type="checkbox" id="secActive" checked /><span></span> ظاهر في الموقع</label>
+        <label class="check inline"><input type="checkbox" id="secRail" checked /><span></span> عرضه كصف منتجات في الصفحة الرئيسية</label>
         <label>اختر منتجات القسم (<b id="pickCount">0</b>)</label>
         <div class="search small"><i class="fas fa-magnifying-glass"></i><input id="pickSearch" type="search" placeholder="ابحث في المنتجات" /></div>
         <div id="pickList" class="picklist"></div>
         <button type="submit" id="secSave" class="btn primary block"><i class="fas fa-floppy-disk"></i> حفظ القسم</button>
+      </form>
+    </section>
+
+    <section id="zoneSheet" class="sheet">
+      <button class="sheet-x" data-close aria-label="إغلاق"><i class="fas fa-xmark"></i></button>
+      <h3 id="zoneSheetTitle" class="sheet-title">منطقة جديدة</h3>
+      <form id="zoneForm" class="form">
+        <label for="zName">اسم المنطقة</label>
+        <input id="zName" type="text" required placeholder="مثال: القاهرة — مدينة نصر" />
+        <div class="row2">
+          <div><label for="zShipping">سعر الشحن (ج.م)</label><input id="zShipping" type="number" inputmode="numeric" min="0" required placeholder="60" /></div>
+          <div><label for="zPct">نسبة المقدّم من سعر المنتجات (%)</label><input id="zPct" type="number" inputmode="decimal" min="0" max="100" step="1" required value="0" /></div>
+        </div>
+        <p class="hint" id="zExample"></p>
+        <label class="check inline"><input type="checkbox" id="zActive" checked /><span></span> متاحة للطلب</label>
+        <button type="submit" id="zSave" class="btn primary block"><i class="fas fa-floppy-disk"></i> حفظ المنطقة</button>
       </form>
     </section>
 

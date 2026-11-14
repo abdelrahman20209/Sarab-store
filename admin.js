@@ -9,12 +9,18 @@ import { initCustomers } from "./admin-customers.js";
 import { initStats, renderStats } from "./admin-stats.js";
 import { initSections } from "./admin-sections.js";
 import { initContent } from "./admin-content.js";
+import { initZones } from "./admin-zones.js";
+import { initSettings } from "./admin-settings.js";
+import { initPromo } from "./admin-promo.js";
 
 const VIEWS = {
   dashboard: ["نظرة عامة", "ملخص أداء المتجر لحظة بلحظة"],
   orders: ["الطلبات", "متابعة الطلبات وتحديث حالاتها"],
   products: ["المنتجات", "إدارة العطور والأسعار والعروض"],
-  sections: ["أقسام الصفحة", "رتّب أقسام الصفحة الرئيسية واختر منتجاتها"],
+  sections: ["الأقسام", "أي قسم تضيفه يظهر في كل الموقع تلقائياً"],
+  zones: ["مناطق الشحن", "الأماكن التي توصّل لها وسعر الشحن ونسبة المقدّم"],
+  settings: ["الدفع والشروط", "أرقام التحويل ونص الشروط والأحكام"],
+  promo: ["رسالة ترويجية", "أرسل عرضاً لكل عملائك بالإيميل"],
   content: ["محتوى الموقع", "الإعلانات وكل النصوص والصور"],
   customers: ["العملاء", "كل من تعامل مع سراب"],
 };
@@ -55,6 +61,9 @@ function startApp(user) {
   initStats();
   initSections();
   initContent();
+  initZones();
+  initSettings();
+  initPromo();
   watchIdle();
   go(location.hash.slice(1) in VIEWS ? location.hash.slice(1) : "dashboard");
 }

@@ -1,7 +1,17 @@
 {
   "hosting": {
-    "public": ".",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "firestore.rules*", "DEPLOY.md", "README.md"]
+    "public": "dist",
+    "ignore": ["**/.*", "**/node_modules/**"],
+    "headers": [
+      { "source": "**/*.@(js|css|html)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+      { "source": "**/*.@(jpg|jpeg|png|webp|svg)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] }
+    ],
+    "redirects": [
+      { "source": "/login/**", "destination": "/login.html", "type": 301 },
+      { "source": "/sign up/**", "destination": "/signup.html", "type": 301 },
+      { "source": "/car/**", "destination": "/cart.html", "type": 301 },
+      { "source": "/checkout/**", "destination": "/checkout.html", "type": 301 }
+    ]
   },
   "firestore": {
     "rules": "firestore.rules"

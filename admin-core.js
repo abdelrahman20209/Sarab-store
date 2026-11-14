@@ -2,15 +2,9 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { firebaseConfig, API_URL } from "./js/config.js";
+export { API_URL };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAi3ae1vCSip7C7VTBOSdyyTDMbhD_pZuw",
-  authDomain: "sarab-3tor.firebaseapp.com",
-  projectId: "sarab-3tor",
-  storageBucket: "sarab-3tor.firebasestorage.app",
-  messagingSenderId: "132817463996",
-  appId: "1:132817463996:web:6d63c584d1342b2598feb9",
-};
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export const db = getFirestore(app);
 export const auth = getAuth(app);
@@ -18,7 +12,7 @@ export const auth = getAuth(app);
 export const $ = (s, r = document) => r.querySelector(s);
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 export const bus = new EventTarget();
-export const store = { orders: [], products: [], sections: [] };
+export const store = { orders: [], products: [], sections: [], zones: [] };
 
 export const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]);
@@ -26,9 +20,9 @@ export const esc = (s) =>
 export const money = (n) => Number(n || 0).toLocaleString("en-US", { maximumFractionDigits: 0 }) + " ج.م";
 
 export const STATUS = {
-  pending_payment: { label: "انتظار الدفع", tone: "warn" },
+  pending_payment: { label: "بانتظار التحويل", tone: "warn" },
   pending: { label: "قيد المراجعة", tone: "warn" },
-  paid: { label: "تم الدفع", tone: "info" },
+  paid: { label: "تم تأكيد التحويل", tone: "info" },
   shipped: { label: "تم الشحن", tone: "violet" },
   on_the_way: { label: "في الطريق", tone: "violet" },
   delivered: { label: "تم التسليم", tone: "ok" },
@@ -77,6 +71,18 @@ export function normalizeOrder(id, o) {
     createdAt: o.createdAt || null,
     items: Array.isArray(items) ? items : [],
     userId: o.userId || "",
+    email: o.email || "",
+    altPhone: o.altPhone || "",
+    zoneName: o.zoneName || "",
+    addressDetail: o.addressDetail || "",
+    notes: o.notes || "",
+    subtotal: Number(o.subtotal ?? o.totalPrice ?? o.totalAmount ?? o.total ?? 0),
+    shipping: Number(o.shipping || 0),
+    depositPct: Number(o.depositPct || 0),
+    deposit: Number(o.deposit || 0),
+    payNow: Number(o.payNow || 0),
+    payOnDelivery: Number(o.payOnDelivery ?? o.totalPrice ?? 0),
+    hasSplit: o.payNow != null,
   };
 }
 

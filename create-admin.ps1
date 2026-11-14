@@ -34,4 +34,4 @@ Write-Host "Email : $($r.email)"
 Write-Host "UID   : $($r.localId)"
 Write-Host ''
 Write-Host 'Next: Firebase Console > Firestore > create collection "admins", document ID = the UID above, field role = "admin".'
-Write-Host 'Admin page: https://sarab-a22.pages.dev/admin.html'
+Write-Host 'Admin page: https://sarab-3tor.web.app/admin.html'

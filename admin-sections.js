@@ -1,10 +1,19 @@
 // إدارة أقسام الصفحة الرئيسية (كل قسم = صف منتجات تختارها بنفسك)
 import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { db, $, $$, esc, toast, store, bus, openSheet, closeSheets } from "./admin-core.js";
+import { uploadImage } from "./admin-products.js";
 
 let editId = null;
 let picked = new Set();
 let pickTerm = "";
+let secFile = null;
+let secImg = "";
+
+function setSecPreview(src) {
+  const box = $("#secImgPreview");
+  box.innerHTML = src ? `<img src="${esc(src)}" alt="">` : `<i class="fas fa-camera"></i><span>اضغط لاختيار صورة — لو تركتها فارغة تُستخدم صورة أول منتج</span>`;
+  box.classList.toggle("has", !!src);
+}
 
 const sorted = () => [...store.sections].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
@@ -20,7 +29,8 @@ function render() {
       <div class="s-main">
         <h4>${esc(s.title)}</h4>
         <small class="muted">${esc(s.subtitle || "بدون عنوان فرعي")} · ${prods.length} منتج</small>
-        <div class="s-thumbs">${prods.slice(0, 5).map((p) => `<img src="${esc(p.image || "")}" alt="">`).join("")}${prods.length > 5 ? `<span>+${prods.length - 5}</span>` : ""}</div>
+        ${prods.length ? "" : `<small class="gold"><i class="fas fa-triangle-exclamation"></i> القسم فارغ — لن يظهر للعملاء حتى تضيف له منتجات</small>`}
+        <div class="s-thumbs">${s.image ? `<img src="${esc(s.image)}" alt="" title="صورة القسم" style="outline: 2px solid var(--gold)">` : ""}${prods.slice(0, 5).map((p) => `<img src="${esc(p.image || "")}" alt="">`).join("")}${prods.length > 5 ? `<span>+${prods.length - 5}</span>` : ""}</div>
       </div>
       <div class="s-side">
         <label class="switch" title="ظاهر في الموقع"><input type="checkbox" data-act="toggle" ${s.active === false ? "" : "checked"}><span></span></label>
@@ -33,7 +43,7 @@ function render() {
       </div>
     </article>`;
       }).join("")
-    : `<div class="empty"><i class="fas fa-layer-group"></i><p>لا توجد أقسام بعد.<br>أنشئ قسماً مثل "الأكثر مبيعاً" أو "وصل حديثاً" واختر له منتجاته.</p></div>`;
+    : `<div class="empty"><i class="fas fa-layer-group"></i><p>لا توجد أقسام بعد.<br>أنشئ قسماً مثل "رجالي" أو "التقسيمات" أو "الأكثر مبيعاً" واختر له منتجاته — وسيظهر في كل الموقع.</p></div>`;
 }
 
 function renderPicker() {
@@ -57,6 +67,11 @@ function openForm(s = null) {
   $("#secTitle").value = s?.title || "";
   $("#secSub").value = s?.subtitle || "";
   $("#secActive").checked = s ? s.active !== false : true;
+  $("#secRail").checked = s ? s.showRail !== false : true;
+  secFile = null;
+  secImg = s?.image || "";
+  $("#secImage").value = "";
+  setSecPreview(secImg);
   $("#pickSearch").value = "";
   $("#sectionSheetTitle").textContent = s ? "تعديل القسم" : "قسم جديد";
   renderPicker();
@@ -66,13 +81,15 @@ function openForm(s = null) {
 async function save(e) {
   e.preventDefault();
   const btn = $("#secSave");
-  if (!picked.size) return toast("اختر منتجاً واحداً على الأقل", "err");
   btn.disabled = true;
   try {
+    if (secFile) secImg = await uploadImage(secFile);
     const data = {
       title: $("#secTitle").value.trim(),
       subtitle: $("#secSub").value.trim(),
       active: $("#secActive").checked,
+      showRail: $("#secRail").checked,
+      image: secImg || "",
       productIds: [...picked],
       updatedAt: serverTimestamp(),
     };
@@ -110,6 +127,10 @@ export function initSections() {
     $("#pickCount").textContent = picked.size;
   });
   $("#sectionForm").addEventListener("submit", save);
+  $("#secImage").addEventListener("change", (e) => {
+    secFile = e.target.files[0] || null;
+    if (secFile) setSecPreview(URL.createObjectURL(secFile));
+  });
 
   $("#sectionsList").addEventListener("click", async (e) => {
     const card = e.target.closest(".scard");

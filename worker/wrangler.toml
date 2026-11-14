@@ -1,0 +1,19 @@
+# Sarab API (Cloudflare Worker) — OTP بالإيميل + الرسائل الترويجية
+# المفتاح السري لا يُكتب هنا. أضِفه بالأمر:  npx wrangler secret put BREVO_API_KEY
+name = "sarab-api"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "KV"
+id = "048b4d2bc5a84819a8b8f2d53f32ae02"
+
+[vars]
+STORE_NAME = "سراب"
+FIREBASE_PROJECT = "sarab-3tor"
+FIREBASE_API_KEY = "AIzaSyAi3ae1vCSip7C7VTBOSdyyTDMbhD_pZuw"
+ALLOWED_ORIGINS = "https://sarab-3tor.web.app,https://sarab-3tor.firebaseapp.com"
+# اختياري: لو عايز تحدد إيميل المُرسِل يدوياً (لازم يكون مفعّل في Brevo). لو فاضي بيستخدم أول مُرسِل مفعّل في حسابك.
+SENDER_EMAIL = ""
+SENDER_NAME = "سراب"

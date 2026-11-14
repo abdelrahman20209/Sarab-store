@@ -411,3 +411,21 @@ small { font-size: 0.78rem; }
 
 .form .search { padding: 0 14px; border-radius: 14px; }
 .form .search input { border: 0 !important; background: none !important; min-height: 46px !important; padding: 0 !important; box-shadow: none !important; }
+
+/* ---------- إضافات: تبويبات أكثر + معاينة الرسالة الترويجية + تفاصيل الدفع ---------- */
+.tabbar { display: flex; overflow-x: auto; scrollbar-width: none; }
+.tabbar::-webkit-scrollbar { display: none; }
+.tabbar button { flex: 1 0 68px; }
+.promo-preview { background: #141414; border: 1px solid var(--line); border-radius: 16px; padding: 18px; line-height: 1.9; }
+.pm-row { align-items: end; }
+.pay-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.pay-box > div { border: 1px solid var(--line); border-radius: 14px; padding: 12px; text-align: center; background: var(--ink-2); }
+.pay-box small { display: block; color: var(--muted); }
+.pay-box b { font-family: var(--display); font-size: 1.3rem; }
+.pay-box .now b { color: #ff6b74; }
+.pay-box .cod { border-color: var(--gold-soft); }
+.pay-box .cod b { color: var(--gold); }
+.pay-box .cod.done { background: rgba(197, 160, 89, 0.12); }
+.dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 0.92rem; }
+.dl dt { color: var(--muted); white-space: nowrap; }
+.dl dd { word-break: break-word; }

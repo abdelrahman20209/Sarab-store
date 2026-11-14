@@ -1,4 +1,4 @@
-import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, writeBatch, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { db, $, $$, esc, money, toast, bus, store, openSheet, closeSheets } from "./admin-core.js";
 import { IMGBB_API_KEY } from "./admin-config.js";
 
@@ -84,6 +84,9 @@ function openForm(p = null) {
     $("#prodDescription").value = p.description || "";
     $("#prodSize").value = p.size || "";
   }
+  $("#prodSections").innerHTML = store.sections.length
+    ? [...store.sections].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).map((s) => `<label class="check"><input type="checkbox" value="${esc(s.id)}" ${p && (s.productIds || []).includes(p.id) ? "checked" : ""} /><span></span> ${esc(s.title)}</label>`).join("")
+    : `<small class="muted">لا توجد أقسام بعد — أضف قسماً من تبويب «الأقسام».</small>`;
   setImagePreview(p?.image || "");
   updatePreview();
   openSheet("productSheet");
@@ -116,14 +119,25 @@ async function save(e) {
     };
     if (image) data.image = image;
 
-    if (editId) {
-      await updateDoc(doc(db, "products", editId), data);
-      toast("تم تحديث العطر");
-    } else {
+    let id = editId;
+    if (editId) await updateDoc(doc(db, "products", editId), data);
+    else {
       data.createdAt = serverTimestamp();
-      await addDoc(collection(db, "products"), data);
-      toast("تمت إضافة العطر");
+      id = (await addDoc(collection(db, "products"), data)).id;
     }
+    // تحديث الأقسام التي يظهر فيها العطر
+    const boxes = $$("#prodSections input[type=checkbox]");
+    if (boxes.length) {
+      const batch = writeBatch(db);
+      let changes = 0;
+      boxes.forEach((b) => {
+        const sec = store.sections.find((s) => s.id === b.value);
+        const has = (sec?.productIds || []).includes(id);
+        if (b.checked !== has) { batch.update(doc(db, "sections", b.value), { productIds: b.checked ? arrayUnion(id) : arrayRemove(id) }); changes++; }
+      });
+      if (changes) await batch.commit();
+    }
+    toast(editId ? "تم تحديث العطر" : "تمت إضافة العطر");
     closeSheets();
   } catch (err) {
     console.error(err);
@@ -147,7 +161,13 @@ export function initProducts() {
     if (btn.dataset.act === "edit") openForm(p);
     if (btn.dataset.act === "del") {
       if (!confirm(`حذف "${p.name}" نهائياً؟ لا يمكن التراجع.`)) return;
-      try { await deleteDoc(doc(db, "products", p.id)); toast("تم حذف العطر"); }
+      try {
+        const batch = writeBatch(db);
+        store.sections.filter((s) => (s.productIds || []).includes(p.id)).forEach((s) => batch.update(doc(db, "sections", s.id), { productIds: arrayRemove(p.id) }));
+        batch.delete(doc(db, "products", p.id));
+        await batch.commit();
+        toast("تم حذف العطر");
+      }
       catch (err) { toast("فشل الحذف: " + err.message, "err"); }
     }
   });

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#050505" />
+    <title>الشروط والأحكام وحقوق النشر | سراب</title>
+    <link rel="icon" type="image/png" href="img/LOGO.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="css/store.css" />
+  </head>
+  <body>
+    <main class="page">
+      <div class="wrap">
+        <div class="page-head"><h1>الشروط والأحكام وحقوق النشر</h1><small class="muted" id="updated"></small></div>
+        <article class="prose" id="terms"></article>
+      </div>
+    </main>
+    <script type="module">
+      import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+      import { $, esc, db, fmtDate } from "./js/core.js";
+      import { initLayout } from "./js/layout.js";
+      import { DEFAULT_TERMS } from "./site-schema.js";
+
+      // تحويل النص البسيط إلى HTML آمن: «## » عنوان، «- » نقطة، وسطر فارغ = فقرة جديدة
+      function toHtml(text) {
+        const out = [];
+        let list = [];
+        const flush = () => { if (list.length) { out.push(`<ul>${list.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`); list = []; } };
+        String(text).split(/\r?\n/).forEach((raw) => {
+          const line = raw.trim();
+          if (!line) return flush();
+          if (line.startsWith("## ")) { flush(); out.push(`<h2>${esc(line.slice(3))}</h2>`); }
+          else if (/^[-•]\s+/.test(line)) list.push(line.replace(/^[-•]\s+/, ""));
+          else { flush(); out.push(`<p>${esc(line)}</p>`); }
+        });
+        flush();
+        return out.join("");
+      }
+
+      initLayout("");
+      $("#terms").innerHTML = toHtml(DEFAULT_TERMS);
+      try {
+        const snap = await getDoc(doc(db, "settings", "terms"));
+        if (snap.exists() && snap.data().text) {
+          $("#terms").innerHTML = toHtml(snap.data().text);
+          if (snap.data().updatedAt) $("#updated").textContent = "آخر تحديث: " + fmtDate(snap.data().updatedAt);
+        }
+      } catch (e) { console.warn(e.message); }
+    </script>
+  </body>
+</html>
